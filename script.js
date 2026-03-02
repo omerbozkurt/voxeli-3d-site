@@ -23,7 +23,7 @@ function init() {
         const div = document.createElement('div');
         div.className = 'menu-card';
         div.innerHTML = `
-            <div class="card-image-container"><img src="${item.img}" alt="${item.name}" loading="lazy"></div>
+            <div class="card-image-container"><img src="${item.img}" alt="${item.name}"></div>
             <div class="card-info"><h3>${item.name}</h3><span class="price">${item.price}</span></div>`;
         div.onclick = () => openModal(item);
         container.appendChild(div);
@@ -36,18 +36,15 @@ function openModal(item) {
     document.getElementById('modal-calories').innerText = item.cal;
     document.getElementById('modal-ingredients').innerText = item.ing;
     
-    // --- 404 HATASI FIX: TAM URL OLUŞTURMA ---
+    // AR 404 FIX
     const arLink = document.getElementById('ar-link');
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
-    // Mevcut dizini tam URL olarak al (GitHub Pages uyumlu)
-    const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
     const modelUrl = baseUrl + item.model;
 
     if (isIOS) {
         arLink.href = modelUrl.replace('.glb', '.usdz');
     } else {
-        // Android Intent Parametreleri (Daha stabil)
         arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true&title=${encodeURIComponent(item.name)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end;`;
     }
 
@@ -66,7 +63,7 @@ function setup3D() {
     viewerContainer.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(40, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.01, 1000);
-    camera.position.set(0, 1.5, 6);
+    camera.position.set(0, 2, 8);
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.5), new THREE.DirectionalLight(0xffffff, 1.5));
     
@@ -82,6 +79,9 @@ function setup3D() {
     animate();
 }
 
+/**
+ * NORMALİZE ÖLÇEKLENDİRME SİSTEMİ
+ */
 function loadModel(path) {
     const loader = new GLTFLoader();
     loadingText.style.display = 'block';
@@ -98,20 +98,24 @@ function loadModel(path) {
             }
         });
 
-        // Smart Centering & Zoom
+        // 1. Modeli 0 noktasına merkeze al
         const box = new THREE.Box3().setFromObject(currentModel);
         const center = box.getCenter(new THREE.Vector3());
         currentModel.position.sub(center);
         
+        // 2. MODELLERİ EŞİTLE (Kritik Bölge)
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        currentModel.scale.setScalar(3.8 / maxDim);
+        
+        // Ne kadar büyük veya küçük olursa olsun, en büyük boyutu 4.5 birim olacak şekilde eşitle
+        const targetScale = 4.5 / maxDim;
+        currentModel.scale.setScalar(targetScale);
         
         scene.add(currentModel);
         
-        const finalBox = new THREE.Box3().setFromObject(currentModel);
-        const finalSize = finalBox.getSize(new THREE.Vector3());
-        camera.position.set(0, finalSize.y / 2, Math.max(finalSize.x, finalSize.y, finalSize.z) * 2.5);
+        // 3. Kamerayı modele göre dinamik ayarla
+        const camDist = 10; // Sabit iştah açıcı mesafe
+        camera.position.set(0, 2, camDist);
         controls.target.set(0, 0, 0);
         controls.update();
         
@@ -123,7 +127,10 @@ function loadModel(path) {
 document.getElementById('close-btn').onclick = () => {
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
-    if (currentModel) scene.remove(currentModel);
+    if (currentModel) {
+        scene.remove(currentModel);
+        currentModel = null;
+    }
 };
 
 init();
