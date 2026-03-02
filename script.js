@@ -23,7 +23,10 @@ function init() {
         const div = document.createElement('div');
         div.className = 'menu-card';
         div.innerHTML = `
-            <div class="card-image-container"><img src="${item.img}" alt="${item.name}"></div>
+            <div class="card-image-container">
+                <img src="${item.img}" alt="${item.name}">
+                <div class="spatial-badge">3D</div>
+            </div>
             <div class="card-info"><h3>${item.name}</h3><span class="price">${item.price}</span></div>`;
         div.onclick = () => openModal(item);
         container.appendChild(div);
@@ -36,18 +39,21 @@ function openModal(item) {
     document.getElementById('modal-calories').innerText = item.cal;
     document.getElementById('modal-ingredients').innerText = item.ing;
     
-    // --- AR 404 HATASI FIX: TAM URL OLUŞTURMA ---
     const arLink = document.getElementById('ar-link');
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
-    // GitHub Pages kök dizinini ve klasör yapısını tam olarak yakalar
     const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
     const modelUrl = baseUrl + item.model;
 
     if (isIOS) {
-        arLink.href = modelUrl.replace('.glb', '.usdz');
+        // USDZ olmadığı için iOS kullanıcılarını bilgilendiren bir uyarı ekliyoruz
+        arLink.onclick = (e) => {
+            e.preventDefault();
+            alert("iOS cihazlarda AR özelliği için .usdz modelleri hazırlanıyor. Yakında aktif!");
+        };
+        arLink.href = "#";
     } else {
-        // Android için tam adresi Scene Viewer'a iletir
+        // Android tarafı GLB ile tam gaz çalışır
+        arLink.onclick = null;
         arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true&title=${encodeURIComponent(item.name)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end;`;
     }
 
@@ -60,7 +66,7 @@ function openModal(item) {
 function setup3D() {
     if (scene) return;
     scene = new THREE.Scene();
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(viewerContainer.clientWidth, viewerContainer.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     viewerContainer.appendChild(renderer.domElement);
@@ -98,7 +104,7 @@ function loadModel(path) {
             }
         });
 
-        // NORMALIZE ÖLÇEKLENDİRME (Tüm modelleri eşit boyuta getirir)
+        // NORMALİZE ÖLÇEKLENDİRME
         const box = new THREE.Box3().setFromObject(currentModel);
         const center = box.getCenter(new THREE.Vector3());
         currentModel.position.sub(center);
@@ -109,7 +115,6 @@ function loadModel(path) {
         
         scene.add(currentModel);
         
-        // Akıllı Odaklama
         const camDist = 10;
         camera.position.set(0, 2, camDist);
         controls.target.set(0, 0, 0);
@@ -123,10 +128,7 @@ function loadModel(path) {
 document.getElementById('close-btn').onclick = () => {
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
-    if (currentModel) {
-        scene.remove(currentModel);
-        currentModel = null;
-    }
+    if (currentModel) scene.remove(currentModel);
 };
 
 init();
