@@ -23,7 +23,7 @@ function init() {
         const div = document.createElement('div');
         div.className = 'menu-card';
         div.innerHTML = `
-            <div class="card-image-container"><img src="${item.img}" loading="lazy"></div>
+            <div class="card-image-container"><img src="${item.img}" alt="${item.name}" loading="lazy"></div>
             <div class="card-info"><h3>${item.name}</h3><span class="price">${item.price}</span></div>`;
         div.onclick = () => openModal(item);
         container.appendChild(div);
@@ -36,13 +36,19 @@ function openModal(item) {
     document.getElementById('modal-calories').innerText = item.cal;
     document.getElementById('modal-ingredients').innerText = item.ing;
     
+    // --- 404 HATASI FIX: TAM URL OLUŞTURMA ---
     const arLink = document.getElementById('ar-link');
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    // Mevcut dizini tam URL olarak al (GitHub Pages uyumlu)
+    const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+    const modelUrl = baseUrl + item.model;
+
     if (isIOS) {
-        arLink.href = item.model.replace('.glb', '.usdz');
+        arLink.href = modelUrl.replace('.glb', '.usdz');
     } else {
-        const fullPath = window.location.origin + window.location.pathname.replace('index.html', '') + item.model;
-        arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${fullPath}&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;`;
+        // Android Intent Parametreleri (Daha stabil)
+        arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true&title=${encodeURIComponent(item.name)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end;`;
     }
 
     modal.classList.remove('hidden');
@@ -59,14 +65,11 @@ function setup3D() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     viewerContainer.appendChild(renderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(45, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.01, 1000);
-    camera.position.set(0, 2, 10);
+    camera = new THREE.PerspectiveCamera(40, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.01, 1000);
+    camera.position.set(0, 1.5, 6);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.5);
-    dirLight.position.set(5, 10, 7.5);
-    scene.add(ambientLight, dirLight);
-
+    scene.add(new THREE.AmbientLight(0xffffff, 1.5), new THREE.DirectionalLight(0xffffff, 1.5));
+    
     controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.autoRotate = true;
@@ -88,33 +91,27 @@ function loadModel(path) {
         if (currentModel) scene.remove(currentModel);
         currentModel = gltf.scene;
 
-        // BRUTE FORCE: Cheesecake'in her parçasını zorla göster
         currentModel.traverse((child) => {
             if (child.isMesh) {
-                child.material.side = THREE.DoubleSide; 
-                child.material.transparent = false;
-                child.material.opacity = 1;
+                child.material.side = THREE.DoubleSide;
                 child.frustumCulled = false;
             }
         });
 
-        // MERKEZLEME
+        // Smart Centering & Zoom
         const box = new THREE.Box3().setFromObject(currentModel);
         const center = box.getCenter(new THREE.Vector3());
         currentModel.position.sub(center);
         
-        // ÖLÇEKLENDİRME
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        currentModel.scale.setScalar(4.5 / maxDim); 
+        currentModel.scale.setScalar(3.8 / maxDim);
         
         scene.add(currentModel);
-
-        // KAMERA ZOOM-IN: Modeli kadraja zorla oturt
+        
         const finalBox = new THREE.Box3().setFromObject(currentModel);
         const finalSize = finalBox.getSize(new THREE.Vector3());
-        const camDist = Math.max(finalSize.x, finalSize.y, finalSize.z) * 2.2;
-        camera.position.set(0, finalSize.y / 2, camDist);
+        camera.position.set(0, finalSize.y / 2, Math.max(finalSize.x, finalSize.y, finalSize.z) * 2.5);
         controls.target.set(0, 0, 0);
         controls.update();
         
