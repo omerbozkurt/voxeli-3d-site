@@ -13,6 +13,7 @@ const menuItems = [
 const container = document.getElementById('menu-container');
 const modal = document.getElementById('model-modal');
 const viewerContainer = document.getElementById('3d-viewer');
+const loaderWrapper = document.getElementById('loader-wrapper');
 const loadingText = document.getElementById('loading-text');
 
 let scene, camera, renderer, controls, currentModel;
@@ -45,14 +46,12 @@ function openModal(item) {
     const modelUrl = baseUrl + item.model;
 
     if (isIOS) {
-        // USDZ olmadığı için iOS kullanıcılarını bilgilendiren bir uyarı ekliyoruz
         arLink.onclick = (e) => {
             e.preventDefault();
-            alert("iOS cihazlarda AR özelliği için .usdz modelleri hazırlanıyor. Yakında aktif!");
+            alert("iOS cihazlarda AR özelliği için modeller hazırlanıyor!");
         };
         arLink.href = "#";
     } else {
-        // Android tarafı GLB ile tam gaz çalışır
         arLink.onclick = null;
         arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true&title=${encodeURIComponent(item.name)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end;`;
     }
@@ -90,10 +89,11 @@ function setup3D() {
 
 function loadModel(path) {
     const loader = new GLTFLoader();
-    loadingText.style.display = 'block';
+    loaderWrapper.style.display = 'flex'; // Loader'ı göster
+    loadingText.innerText = "YÜKLENİYOR";
 
     loader.load(path, (gltf) => {
-        loadingText.style.display = 'none';
+        loaderWrapper.style.display = 'none'; // Yükleme bitince loader'ı gizle
         if (currentModel) scene.remove(currentModel);
         currentModel = gltf.scene;
 
@@ -104,7 +104,6 @@ function loadModel(path) {
             }
         });
 
-        // NORMALİZE ÖLÇEKLENDİRME
         const box = new THREE.Box3().setFromObject(currentModel);
         const center = box.getCenter(new THREE.Vector3());
         currentModel.position.sub(center);
@@ -121,7 +120,7 @@ function loadModel(path) {
         controls.update();
         
     }, undefined, (e) => { 
-        loadingText.innerText = "Yükleme Hatası!"; 
+        loadingText.innerText = "HATA!";
     });
 }
 
