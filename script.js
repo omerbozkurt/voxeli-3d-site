@@ -2,13 +2,21 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+// --- GECE/GÜNDÜZ VE MOBİL MENÜ ---
 const themeBtn = document.getElementById('theme-toggle');
 themeBtn.addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
     themeBtn.innerText = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
 });
 
-// HERO BÖLÜMÜNDEKİ "DÖNER" MODELİ
+const hamburgerBtn = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+const navItems = document.querySelectorAll('.nav-item');
+
+hamburgerBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+navItems.forEach(item => { item.addEventListener('click', () => { navLinks.classList.remove('active'); }); });
+
+// --- HERO BÖLÜMÜ (DÖNER) ---
 function setupHero3D() {
     const container = document.getElementById('hero-3d-viewer');
     if (!container) return;
@@ -17,7 +25,7 @@ function setupHero3D() {
     const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.set(0, 1.5, 8);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
@@ -59,7 +67,9 @@ function setupHero3D() {
     });
 }
 
-// MENÜ VE MODAL MANTIĞI
+window.addEventListener('load', setupHero3D);
+
+// --- MENÜ VE MODAL MANTIĞI ---
 const menuItems = [
     { id: 1, name: "Hamburger", price: "220 ₺", cal: 650, ing: "Dana eti, Cheddar", img: "images/hamburger.jpg", model: "models/hamburger.glb" },
     { id: 2, name: "Pizza", price: "310 ₺", cal: 850, ing: "Mozzarella, Fesleğen", img: "images/pizza.jpg", model: "models/pizza.glb" },
@@ -76,16 +86,13 @@ const loaderWrapper = document.getElementById('loader-wrapper');
 let modalScene, modalCamera, modalRenderer, modalControls, currentModalModel;
 
 function init() {
-    setupHero3D();
-    
     container.innerHTML = '';
     menuItems.forEach(item => {
         const div = document.createElement('div');
         div.className = 'menu-card';
-        // 3D KEŞFET ibaresi 3D olarak güncellendi
         div.innerHTML = `
             <div class="card-image-container">
-                <img src="${item.img}" alt="${item.name}">
+                <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
                 <div class="spatial-badge">3D</div>
             </div>
             <div class="card-info">
@@ -98,7 +105,6 @@ function init() {
 }
 
 function openModal(item) {
-    // JavaScript artık HTML'deki modal-calories ve modal-ingredients alanlarını sorunsuz bulup doldurur.
     document.getElementById('modal-title').innerText = item.name;
     document.getElementById('modal-price').innerText = item.price;
     document.getElementById('modal-calories').innerText = item.cal;
@@ -106,14 +112,17 @@ function openModal(item) {
     
     const arLink = document.getElementById('ar-link');
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const modelUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/') + item.model;
+    
+    // Modelin ismini URL'den alıp yeni WebXR sayfamıza yolluyoruz
+    const modelFileName = item.model.split('/').pop().replace('.glb', '');
 
     if (isIOS) {
         arLink.onclick = (e) => { e.preventDefault(); alert("iOS AR modelleri hazırlanıyor!"); };
         arLink.href = "#";
     } else {
         arLink.onclick = null;
-        arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true&title=${encodeURIComponent(item.name)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end;`;
+        // Tıklandığında kendi WebXR AR (ar-viewer.html) sayfamıza gönderir
+        arLink.href = `ar-viewer.html?model=${modelFileName}`;
     }
 
     modal.classList.remove('hidden');
@@ -125,14 +134,13 @@ function openModal(item) {
 function setupModal3D() {
     if (modalScene) return;
     modalScene = new THREE.Scene();
-    modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     modalRenderer.setSize(viewerContainer.clientWidth, viewerContainer.clientHeight);
     modalRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     viewerContainer.appendChild(modalRenderer.domElement);
 
     modalCamera = new THREE.PerspectiveCamera(40, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.1, 1000);
     modalCamera.position.set(0, 1.5, 10);
-
     modalScene.add(new THREE.AmbientLight(0xffffff, 1.5), new THREE.DirectionalLight(0xffffff, 1.5));
     
     modalControls = new OrbitControls(modalCamera, modalRenderer.domElement);

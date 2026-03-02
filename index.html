@@ -3,86 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOXELI 3D | Gastronomi İçin Yeni Nesil Dijital Deneyimler</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700&display=swap" rel="stylesheet">
+    <title>VOXELI 3D | Restoranlar İçin Dijital Menü</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
     <nav class="navbar">
         <div class="logo">VOXELI <span>3D</span></div>
-        <div class="nav-links">
-            <a href="#home">Ana Sayfa</a>
-            <a href="#services">Hizmetler</a>
-            <a href="#how-it-works">Nasıl Çalışır?</a>
-            <a href="#pricing">Fiyatlandırma</a>
-            <a href="#contact">İletişim</a>
+        <div class="nav-links" id="nav-links">
+            <a href="#home" class="nav-item">Ana Sayfa</a>
+            <a href="#services" class="nav-item">Hizmetler</a>
+            <a href="#how-it-works" class="nav-item">Nasıl Çalışır?</a>
+            <a href="#pricing" class="nav-item">Paketler</a>
+            <a href="#contact" class="nav-item">İletişim</a>
         </div>
         <div class="nav-actions">
-            <button id="theme-toggle" class="theme-btn">🌙</button>
-            <a href="#menu-section" class="demo-btn">Canlı Demo</a>
+            <button id="theme-toggle" class="theme-btn" aria-label="Tema Değiştir">🌙</button>
+            <a href="#menu-section" class="demo-btn hide-on-mobile">Canlı Demo</a>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
         </div>
     </nav>
 
     <section id="home" class="hero-section">
         <div class="hero-grid">
             <div class="hero-content">
-                <span class="badge">GLOBAL DİJİTAL ÇÖZÜMLER</span>
-                <h1>Geleceğin Menü <br><span class="highlight">Teknolojisi</span></h1>
-                <p>
-                    Müşterilerinizin sipariş vermeden önce yemekleri üç boyutlu ve artırılmış gerçeklik destekli olarak deneyimlemesini sağlayan etkileşimli web siteleri geliştiriyoruz. 
-                </p>
+                <span class="badge">DİJİTAL MENÜDE DEVRİM</span>
+                <h1>Menünüzü Üç Boyutlu <br><span class="highlight">Yaşatın</span></h1>
+                <p class="hero-desc">Müşterileriniz masaya oturmadan önce yemeğin her detayını <strong>3D</strong> ve <strong>Artırılmış Gerçeklik (AR)</strong> ile görsün. Satışlarınızı artıracak etkileşimli dijital menü deneyimiyle tanışın.</p>
                 <div class="hero-btns">
                     <a href="#contact" class="primary-btn">Hemen Kaydol</a>
                     <a href="#pricing" class="secondary-btn">Paketleri İncele</a>
-                    <a href="#contact" class="outline-btn">Demo Talep Et</a>
+                </div>
+                <div class="trust-indicator">
+                    <div class="stars">★★★★★</div>
+                    <span><strong>100+</strong> Restoran Tarafından Kullanılıyor</span>
                 </div>
             </div>
-            
             <div class="hero-visual">
                 <div id="hero-3d-viewer" class="hero-3d-container"></div>
             </div>
         </div>
     </section>
 
-    <section id="services" class="services-area">
+    <section id="services" class="services-area render-optimize">
         <div class="section-title">
-            <span class="saffron-text">STRATEJİK AVANTAJ</span>
-            <h2>Büyümeye Odaklı Web Deneyimleri</h2>
-            <p class="section-desc">Ziyaretçiyi müşteriye dönüştüren, performans ve dönüşüm odaklı modern web deneyimleri tasarlıyoruz.</p>
+            <h2>Sıradan Menüleri Dijital Bir Satış Makinesine Dönüştürün</h2>
+            <p class="section-desc">Statik görsellerin ötesine geçin. Müşterilerinize masalarında interaktif bir şölen sunarak sipariş kararlarını <strong>%30'a kadar</strong> hızlandırın.</p>
         </div>
-        <div class="services-grid">
-            <div class="service-card"><div class="service-icon">🧊</div><h3>AR Menü Web Sitesi</h3><p>Uygulama gerektirmeden AR teknolojisiyle karar sürecini hızlandırın.</p></div>
-            <div class="service-card"><div class="service-icon">⚡</div><h3>Üst Düzey Performans</h3><p>Saniyenin altında yükleme süreleri ile maksimum müşteri dönüşümü.</p></div>
-            <div class="service-card"><div class="service-icon">🔍</div><h3>SEO Optimizasyonu</h3><p>Arama motoru görünürlüğünü artıran, sürdürülebilir büyüme altyapısı.</p></div>
-            <div class="service-card"><div class="service-icon">🎨</div><h3>Profesyonel 3D</h3><p>Tüm cihazlarda çalışan, yüksek detay seviyesine sahip profesyonel modeller.</p></div>
+        <div class="modern-services">
+            <div class="modern-service-card">
+                <div class="card-glow"></div>
+                <div class="ms-icon">01</div>
+                <div class="ms-content">
+                    <h3>Hiper-Gerçekçi 3D Modelleme</h3>
+                    <p>Tabağınızdaki her detayı dijital sanata dönüştürüyoruz. Müşterileriniz yemeğin dokusunu adeta hissederek sipariş versin.</p>
+                </div>
+            </div>
+            <div class="modern-service-card">
+                <div class="card-glow"></div>
+                <div class="ms-icon">02</div>
+                <div class="ms-content">
+                    <h3>Uygulamasız WebAR Deneyimi</h3>
+                    <p>Saniyeler İçinde AR Deneyimi: İndirme Yok, Bekleme Yok. Müşterileriniz QR kod okutarak yemeği masasında gerçek boyutlarıyla görüntüler.</p>
+                </div>
+            </div>
+            <div class="modern-service-card">
+                <div class="card-glow"></div>
+                <div class="ms-icon">03</div>
+                <div class="ms-content">
+                    <h3>Dönüşüm Odaklı UI/UX Tasarım</h3>
+                    <p>Göz Alıcı Tasarım, Maksimum Satış Performansı. Saniyenin altında yüklenen ve kullanıcıyı pürüzsüz bir akışla siparişe yönlendiren akıllı arayüzler.</p>
+                </div>
+            </div>
+            <div class="modern-service-card">
+                <div class="card-glow"></div>
+                <div class="ms-icon">04</div>
+                <div class="ms-content">
+                    <h3>Veri Analitiği ve SEO Altyapısı</h3>
+                    <p>Hangi Yemeğiniz Daha Çok İlgi Görüyor? Verilerle Görün. Yerel aramalarda restoranınızı öne çıkaran SEO mimarisi ve detaylı analiz raporları.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="how-it-works" class="how-it-works-area">
+    <section id="how-it-works" class="how-it-works-area render-optimize">
         <div class="section-title">
-            <span class="saffron-text">SÜREÇ</span>
             <h2>Nasıl Çalışır?</h2>
             <p class="section-desc">Markanızı geleceğe taşımak sadece 3 basit adımdan oluşuyor.</p>
         </div>
-        <div class="steps-container">
-            <div class="step-card">
-                <h3>1. 3D Modelleme</h3>
-                <p>Menünüzdeki imza ürünleri özel tarama teknolojileriyle yüksek kalitede üç boyutlu modellere dönüştürüyoruz.</p>
+        <div class="staggered-steps-container">
+            <div class="staggered-step-card">
+                <div class="bg-number">01</div>
+                <div class="step-content">
+                    <h3>3D Modelleme</h3>
+                    <p>Menünüzdeki imza ürünleri özel tarama teknolojileriyle yüksek kalitede üç boyutlu modellere dönüştürüyoruz.</p>
+                </div>
             </div>
-            <div class="step-card">
-                <h3>2. Dijital Entegrasyon</h3>
-                <p>Modellerinizi, markanıza özel tasarladığımız ışık hızında çalışan modern web sitenize entegre ediyoruz.</p>
+            <div class="staggered-step-card">
+                <div class="bg-number">02</div>
+                <div class="step-content">
+                    <h3>Dijital Entegrasyon</h3>
+                    <p>Modellerinizi, markanıza özel tasarladığımız ışık hızında çalışan modern web sitenize entegre ediyoruz.</p>
+                </div>
             </div>
-            <div class="step-card">
-                <h3>3. Masada AR Deneyimi</h3>
-                <p>Müşterileriniz QR kodu okutarak hiçbir uygulama indirmeden yemekleri masasında görür ve kolayca sipariş verir.</p>
+            <div class="staggered-step-card">
+                <div class="bg-number">03</div>
+                <div class="step-content">
+                    <h3>Masada AR Deneyimi</h3>
+                    <p>Müşterileriniz QR kodu okutarak hiçbir uygulama indirmeden yemekleri masasında görür ve kolayca sipariş verir.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="pricing" class="pricing-area">
+    <section id="pricing" class="pricing-area render-optimize">
         <div class="section-title">
-            <span class="saffron-text">YATIRIM PLANI</span>
             <h2>Size Uygun Paketi Seçin</h2>
         </div>
         <div class="pricing-grid">
@@ -98,7 +140,6 @@
                 </ul>
                 <button class="price-btn">Hemen Başla</button>
             </div>
-
             <div class="price-card featured">
                 <div class="pop-badge">Lansmana Özel Kampanya!</div>
                 <h3>Pro Paket</h3>
@@ -114,7 +155,6 @@
                 </ul>
                 <button class="price-btn highlight-btn">Kampanyadan Yararlan</button>
             </div>
-
             <div class="price-card">
                 <h3>Kurumsal Çözüm</h3>
                 <p class="desc">Kendi ekosistemini kurmak isteyen zincir restoranlar için.</p>
@@ -126,51 +166,50 @@
                     <li>Mevcut POS Entegrasyonu</li>
                     <li>Özelleştirilmiş Arayüz</li>
                 </ul>
-                <button class="price-btn">Demo Talep Et</button>
+                <button class="price-btn">Özel Teklif İsteyin</button>
             </div>
         </div>
     </section>
 
-    <section id="menu-section" class="menu-area">
+    <section id="menu-section" class="menu-area render-optimize">
         <div class="section-title">
-            <span class="saffron-text">İNTERAKTİF</span>
             <h2>Canlı Deneyim</h2>
         </div>
         <main class="menu-container" id="menu-container"></main>
     </section>
 
-    <section id="contact" class="contact-area">
+    <section id="contact" class="contact-area render-optimize">
         <div class="section-title">
-            <span class="saffron-text">BİZE ULAŞIN</span>
-            <h2>Geleceği Birlikte İnşa Edelim</h2>
+            <h2>Bize Ulaşın</h2>
         </div>
-        <div class="contact-container">
-            <div class="contact-info">
-                <div class="contact-message">
-                    <h3>VOXELI 3D Ekibi Sizi Bekliyor</h3>
-                    <p>Sorularınız veya platformumuzu restoranınıza nasıl entegre edebileceğimiz hakkında detaylı bilgi almak için formu doldurun.</p>
-                </div>
-                <div class="info-card">
-                    <div class="info-icon">📍</div>
-                    <div class="info-text">
-                        <h4>Ar-Ge Ofisi</h4>
-                        <p>İskenderun Teknik Üniversitesi<br>Hatay/İskenderun</p>
-                    </div>
+        <form class="bento-contact-grid" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
+            <div class="bento-card bento-text">
+                <h3>VOXELI 3D Ekibi Sizi Bekliyor</h3>
+                <p>Aklınızdaki soruları sorun, restoranınızı geleceğe taşıyacak dijital ekosistemi hemen bugün planlamaya başlayalım.</p>
+            </div>
+            <div class="bento-card bento-address">
+                <div class="bento-icon">📍</div>
+                <div class="bento-address-info">
+                    <h4>Ar-Ge Ofisi</h4>
+                    <p>İskenderun Teknik<br>Üniversitesi</p>
                 </div>
             </div>
-
-            <div class="contact-form-wrapper">
-                <form class="contact-form" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
-                    <div class="input-row">
-                        <input type="text" placeholder="Adınız Soyadınız" required>
-                        <input type="text" placeholder="İşletme Adı">
-                    </div>
-                    <input type="email" placeholder="E-Posta Adresiniz" required>
-                    <textarea rows="4" placeholder="Nasıl yardımcı olabiliriz?" required></textarea>
-                    <button type="submit" class="submit-btn">Mesajı Gönder</button>
-                </form>
+            <div class="bento-card bento-input-wrap">
+                <input type="text" placeholder="Adınız Soyadınız" required>
             </div>
-        </div>
+            <div class="bento-card bento-input-wrap">
+                <input type="text" placeholder="İşletme Adı">
+            </div>
+            <div class="bento-card bento-input-wrap">
+                <input type="email" placeholder="E-Posta Adresiniz" required>
+            </div>
+            <div class="bento-card bento-textarea-wrap">
+                <textarea placeholder="Nasıl yardımcı olabiliriz?" required></textarea>
+            </div>
+            <button type="submit" class="bento-card bento-submit">
+                Gönder <span class="submit-arrow">↗</span>
+            </button>
+        </form>
     </section>
 
     <div id="model-modal" class="modal hidden">
