@@ -8,76 +8,74 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
 body { background: var(--matte-black); color: var(--soft-linen); overflow-x: hidden; }
 
-header { padding: 4rem 1rem 2rem; text-align: center; }
-header h1 { font-size: 2.8rem; font-weight: 200; letter-spacing: 5px; }
+header { padding: 3rem 1rem 1.5rem; text-align: center; }
+header h1 { font-size: 2.2rem; font-weight: 200; letter-spacing: 4px; }
 .highlight { color: var(--deep-saffron); font-weight: 700; }
 
-.z-axis-bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; opacity: 0.3; }
-.crosshair { position: absolute; color: rgba(255,255,255,0.2); font-size: 0.8rem; font-weight: 200; }
+.z-axis-bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; opacity: 0.2; }
+.crosshair { position: absolute; color: rgba(255,255,255,0.1); font-size: 0.8rem; }
 
 .menu-container {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 2rem; padding: 2rem; max-width: 1200px; margin: 0 auto 4rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem; padding: 1.5rem; max-width: 1200px; margin: 0 auto;
 }
 
 .menu-card {
     background: var(--glass); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; overflow: hidden; cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.4s;
 }
-
-.menu-card:hover {
-    transform: translateY(-10px);
-    border-color: var(--deep-saffron);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
+.menu-card:hover { transform: translateY(-8px); border-color: var(--deep-saffron); }
 
 .card-image-container { width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; }
-.menu-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.8s ease; }
+.menu-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.6s; }
 .menu-card:hover img { transform: scale(1.1); opacity: 1; }
 
-.card-info { padding: 1.5rem; text-align: center; background: rgba(255,255,255,0.02); }
-.price { color: var(--deep-saffron); font-weight: 700; display: block; margin-top: 8px; font-size: 1.2rem; }
+.card-info { padding: 1rem; text-align: center; }
+.price { color: var(--deep-saffron); font-weight: 700; display: block; margin-top: 5px; }
 
+/* MODAL MOBİL OPTİMİZASYONU */
 .modal {
     position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-    display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(15px);
+    display: flex; align-items: center; justify-content: center; z-index: 1000;
 }
 .modal.hidden { display: none; }
 
 .modal-glass {
-    background: #1a1a1a; width: 95%; max-width: 480px;
-    border-radius: 32px; border: 1px solid rgba(255,255,255,0.1);
-    position: relative; overflow: hidden;
+    background: #1a1a1a; width: 95%; max-width: 450px;
+    height: auto; max-height: 96vh; /* Mobilde ekranın dışına taşmayı engeller */
+    border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
+    position: relative; display: flex; flex-direction: column; overflow: hidden;
 }
 
-.viewer-container { width: 100%; height: 40vh; min-height: 300px; background: #000; position: relative; }
+.viewer-container { width: 100%; height: 35vh; min-height: 250px; background: #000; position: relative; }
 
+/* ÇARPI BUTONU - KESİN GÖRÜNÜRLÜK */
 .close-btn { 
-    position: absolute; top: 20px; right: 20px; font-size: 2.5rem; 
+    position: absolute; top: 15px; right: 15px; font-size: 2.2rem; 
     z-index: 9999; cursor: pointer; color: #fff; line-height: 1;
-    background: rgba(255,255,255,0.1); width: 45px; height: 45px;
+    background: rgba(0,0,0,0.5); width: 40px; height: 40px;
     display: flex; align-items: center; justify-content: center; border-radius: 50%;
 }
 
-.modal-info { padding: 2rem; }
-.info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.modal-price-tag { color: var(--deep-saffron); font-size: 1.6rem; font-weight: 700; }
+.modal-info { padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+.info-header { display: flex; justify-content: space-between; align-items: center; }
+.modal-price-tag { color: var(--deep-saffron); font-size: 1.3rem; font-weight: 700; }
 
-.nutrition-row { display: flex; gap: 12px; margin-bottom: 2rem; }
-.glass-box { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 16px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
-.glass-box strong { display: block; color: var(--deep-saffron); font-size: 0.65rem; text-transform: uppercase; margin-bottom: 4px; }
+.nutrition-row { display: flex; gap: 8px; }
+.glass-box { background: rgba(255,255,255,0.03); padding: 8px; border-radius: 12px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
+.glass-box strong { display: block; color: var(--deep-saffron); font-size: 0.6rem; text-transform: uppercase; }
+.glass-box span { font-size: 0.75rem; }
 
-.action-buttons { display: flex; gap: 12px; }
+.action-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; }
 .ar-btn, .order-btn {
-    flex: 1; padding: 1.2rem; border-radius: 16px; font-weight: 700; font-size: 0.9rem;
+    width: 100%; padding: 0.9rem; border-radius: 12px; font-weight: 700; font-size: 0.8rem;
     text-transform: uppercase; cursor: pointer; text-decoration: none; text-align: center;
 }
 .ar-btn { background: transparent; border: 1px solid var(--deep-saffron); color: var(--deep-saffron); }
 .order-btn { background: var(--deep-saffron); color: #000; border: none; }
 
-@media (max-width: 600px) {
-    .menu-container { grid-template-columns: repeat(2, 1fr); padding: 1rem; gap: 1rem; }
-    .modal-glass { border-radius: 32px 32px 0 0; align-self: flex-end; }
-    .action-buttons { flex-direction: column; }
+@media (min-width: 600px) {
+    .modal-glass { height: auto; }
+    .viewer-container { height: 350px; }
+    .action-buttons { flex-direction: row; }
 }

@@ -36,15 +36,18 @@ function openModal(item) {
     document.getElementById('modal-calories').innerText = item.cal;
     document.getElementById('modal-ingredients').innerText = item.ing;
     
-    // AR 404 FIX
+    // --- AR 404 HATASI FIX: TAM URL OLUŞTURMA ---
     const arLink = document.getElementById('ar-link');
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    // GitHub Pages kök dizinini ve klasör yapısını tam olarak yakalar
     const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
     const modelUrl = baseUrl + item.model;
 
     if (isIOS) {
         arLink.href = modelUrl.replace('.glb', '.usdz');
     } else {
+        // Android için tam adresi Scene Viewer'a iletir
         arLink.href = `intent://arvr.google.com/scene-viewer/1.0?file=${modelUrl}&mode=ar_only&resizable=true&title=${encodeURIComponent(item.name)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=https://developers.google.com/ar;end;`;
     }
 
@@ -79,9 +82,6 @@ function setup3D() {
     animate();
 }
 
-/**
- * NORMALİZE ÖLÇEKLENDİRME SİSTEMİ
- */
 function loadModel(path) {
     const loader = new GLTFLoader();
     loadingText.style.display = 'block';
@@ -98,23 +98,19 @@ function loadModel(path) {
             }
         });
 
-        // 1. Modeli 0 noktasına merkeze al
+        // NORMALIZE ÖLÇEKLENDİRME (Tüm modelleri eşit boyuta getirir)
         const box = new THREE.Box3().setFromObject(currentModel);
         const center = box.getCenter(new THREE.Vector3());
         currentModel.position.sub(center);
         
-        // 2. MODELLERİ EŞİTLE (Kritik Bölge)
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        
-        // Ne kadar büyük veya küçük olursa olsun, en büyük boyutu 4.5 birim olacak şekilde eşitle
-        const targetScale = 4.5 / maxDim;
-        currentModel.scale.setScalar(targetScale);
+        currentModel.scale.setScalar(4.0 / maxDim); 
         
         scene.add(currentModel);
         
-        // 3. Kamerayı modele göre dinamik ayarla
-        const camDist = 10; // Sabit iştah açıcı mesafe
+        // Akıllı Odaklama
+        const camDist = 10;
         camera.position.set(0, 2, camDist);
         controls.target.set(0, 0, 0);
         controls.update();
