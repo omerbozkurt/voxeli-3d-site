@@ -1,89 +1,101 @@
 :root {
-    --matte-black: #121212;
+    --matte-black: #0F0F0F;
     --deep-saffron: #FF9933;
     --soft-linen: #F5F5F7;
-    --glass: rgba(255, 255, 255, 0.05);
+    --glass: rgba(255, 255, 255, 0.04);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
 body { background: var(--matte-black); color: var(--soft-linen); overflow-x: hidden; }
 
+/* Header UX */
 header { padding: 4rem 1rem 2rem; text-align: center; }
-header h1 { font-size: 2.5rem; font-weight: 200; letter-spacing: 5px; }
+header h1 { font-size: 2.4rem; font-weight: 200; letter-spacing: 7px; text-transform: uppercase; }
 .highlight { color: var(--deep-saffron); font-weight: 700; }
+.subtitle { font-size: 0.7rem; letter-spacing: 3px; color: #666; text-transform: uppercase; margin-top: 5px; }
 
-/* Menü Kartları ve Hover */
+/* GRID SİSTEMİ - MOBİLDE YAN YANA 2 KART */
 .menu-container {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1.5rem; padding: 2rem; max-width: 1100px; margin: 0 auto 4rem;
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); /* Varsayılan: Mobilde 2 sütun */
+    gap: 1rem; padding: 1rem; max-width: 1200px; margin: 0 auto 4rem;
 }
 
+/* KART TASARIMI - DAHA KOMPAKT VE ŞIK */
 .menu-card {
-    background: var(--glass); border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 24px; overflow: hidden; cursor: pointer;
-    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: var(--glass); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 18px; overflow: hidden; cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     position: relative;
 }
-.menu-card:hover { transform: translateY(-10px); border-color: var(--deep-saffron); }
-.card-image-container { width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; }
-.menu-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.8s ease; }
-.menu-card:hover img { transform: scale(1.1); opacity: 1; }
 
-/* 3D Badge */
+.menu-card:hover { transform: translateY(-5px); border-color: var(--deep-saffron); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+
+.card-image-container { width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; }
+.menu-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: 0.6s ease; }
+
 .spatial-badge {
-    position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.6);
-    color: var(--deep-saffron); padding: 4px 10px; border-radius: 20px;
-    font-size: 0.6rem; font-weight: 700; border: 1px solid rgba(255, 153, 51, 0.3); z-index: 5;
+    position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6);
+    color: var(--deep-saffron); padding: 4px 8px; border-radius: 10px;
+    font-size: 0.55rem; font-weight: 700; border: 1px solid rgba(255, 153, 51, 0.2); z-index: 5;
 }
 
-/* Modal Yapısı */
+.card-info { padding: 1rem 0.8rem; text-align: left; }
+.card-info h3 { font-size: 0.85rem; font-weight: 400; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.price { color: var(--deep-saffron); font-weight: 700; font-size: 0.95rem; }
+
+/* MODAL UI */
 .modal {
     position: fixed; inset: 0; background: rgba(0,0,0,0.95);
     display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(15px);
 }
 .modal.hidden { display: none; }
+
 .modal-glass {
-    background: #1a1a1a; width: 95%; max-width: 480px;
-    border-radius: 32px; border: 1px solid rgba(255,255,255,0.1);
+    background: #141414; width: 92%; max-width: 440px;
+    max-height: 92vh; display: flex; flex-direction: column;
+    border-radius: 28px; border: 1px solid rgba(255,255,255,0.08);
     position: relative; overflow: hidden;
 }
 
-/* --- ANIMASYONLU LOADER (DÖNEN) --- */
-#loader-wrapper {
-    position: absolute; inset: 0; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; z-index: 10; background: #000;
-}
-.spinner {
-    width: 40px; height: 40px; border: 3px solid rgba(255, 153, 51, 0.1);
-    border-top: 3px solid var(--deep-saffron); border-radius: 50%;
-    animation: spin 1s linear infinite; margin-bottom: 15px;
-}
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-#loading-text { font-size: 0.7rem; letter-spacing: 2px; color: var(--deep-saffron); }
+.viewer-container { width: 100%; height: 30vh; min-height: 250px; background: #000; position: relative; }
 
-/* Viewer & Butonlar */
-.viewer-container { width: 100%; height: 35vh; min-height: 280px; background: #000; position: relative; }
 .close-btn { 
-    position: absolute; top: 15px; right: 15px; font-size: 2.5rem; 
+    position: absolute; top: 12px; right: 12px; font-size: 2rem; 
     z-index: 9999; cursor: pointer; color: #fff; line-height: 1;
-    background: rgba(255,255,255,0.1); width: 45px; height: 45px;
+    background: rgba(0,0,0,0.5); width: 38px; height: 38px;
     display: flex; align-items: center; justify-content: center; border-radius: 50%;
 }
-.modal-info { padding: 1.5rem; }
-.nutrition-row { display: flex; gap: 10px; margin-bottom: 1.5rem; }
-.glass-box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
-.glass-box strong { display: block; color: var(--deep-saffron); font-size: 0.6rem; text-transform: uppercase; }
 
-.action-buttons { display: flex; gap: 10px; }
+.modal-info { padding: 1.5rem; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.info-header { display: flex; justify-content: space-between; align-items: center; }
+.modal-info h2 { font-size: 1.3rem; font-weight: 400; }
+.modal-price-tag { color: var(--deep-saffron); font-size: 1.4rem; font-weight: 700; }
+
+.nutrition-row { display: flex; gap: 8px; }
+.glass-box { background: rgba(255,255,255,0.02); padding: 10px; border-radius: 14px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
+.glass-box strong { display: block; color: var(--deep-saffron); font-size: 0.55rem; text-transform: uppercase; margin-bottom: 2px; }
+.glass-box span { font-size: 0.75rem; color: #ccc; }
+
+.action-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
 .ar-btn, .order-btn {
-    flex: 1; padding: 1.1rem; border-radius: 16px; font-weight: 700; font-size: 0.85rem;
-    text-transform: uppercase; cursor: pointer; text-align: center; text-decoration: none;
+    width: 100%; padding: 1.1rem; border-radius: 14px; font-weight: 700; font-size: 0.8rem;
+    text-transform: uppercase; cursor: pointer; text-decoration: none; text-align: center;
 }
 .ar-btn { background: transparent; border: 1px solid var(--deep-saffron); color: var(--deep-saffron); }
 .order-btn { background: var(--deep-saffron); color: #000; border: none; }
 
-@media (max-width: 600px) {
-    .menu-container { grid-template-columns: repeat(2, 1fr); padding: 1rem; gap: 1rem; }
-    .modal-glass { width: 100%; border-radius: 32px 32px 0 0; align-self: flex-end; }
-    .action-buttons { flex-direction: column; }
+/* SPINNER */
+#loader-wrapper { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #000; z-index: 10; }
+.spinner { width: 30px; height: 30px; border: 2px solid rgba(255, 153, 51, 0.1); border-top: 2px solid var(--deep-saffron); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+#loading-text { font-size: 0.6rem; letter-spacing: 2px; color: var(--deep-saffron); }
+
+/* MASAÜSTÜ OPTİMİZASYONU */
+@media (min-width: 768px) {
+    .menu-container { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); padding: 2rem; gap: 2rem; }
+    .modal-glass { height: auto; border-radius: 32px; }
+    .action-buttons { flex-direction: row; }
+    .viewer-container { height: 300px; }
+    .card-info h3 { font-size: 1rem; }
 }

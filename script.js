@@ -14,7 +14,6 @@ const container = document.getElementById('menu-container');
 const modal = document.getElementById('model-modal');
 const viewerContainer = document.getElementById('3d-viewer');
 const loaderWrapper = document.getElementById('loader-wrapper');
-const loadingText = document.getElementById('loading-text');
 
 let scene, camera, renderer, controls, currentModel;
 
@@ -28,7 +27,10 @@ function init() {
                 <img src="${item.img}" alt="${item.name}">
                 <div class="spatial-badge">3D</div>
             </div>
-            <div class="card-info"><h3>${item.name}</h3><span class="price">${item.price}</span></div>`;
+            <div class="card-info">
+                <h3>${item.name}</h3>
+                <span class="price">${item.price}</span>
+            </div>`;
         div.onclick = () => openModal(item);
         container.appendChild(div);
     });
@@ -48,7 +50,7 @@ function openModal(item) {
     if (isIOS) {
         arLink.onclick = (e) => {
             e.preventDefault();
-            alert("iOS cihazlarda AR özelliği için modeller hazırlanıyor!");
+            alert("iOS AR (USDZ) modelleri hazırlanıyor. Android'de hemen deneyebilirsiniz!");
         };
         arLink.href = "#";
     } else {
@@ -65,13 +67,13 @@ function openModal(item) {
 function setup3D() {
     if (scene) return;
     scene = new THREE.Scene();
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setSize(viewerContainer.clientWidth, viewerContainer.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     viewerContainer.appendChild(renderer.domElement);
 
     camera = new THREE.PerspectiveCamera(40, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.01, 1000);
-    camera.position.set(0, 2, 8);
+    camera.position.set(0, 2, 10);
 
     scene.add(new THREE.AmbientLight(0xffffff, 1.5), new THREE.DirectionalLight(0xffffff, 1.5));
     
@@ -89,11 +91,10 @@ function setup3D() {
 
 function loadModel(path) {
     const loader = new GLTFLoader();
-    loaderWrapper.style.display = 'flex'; // Loader'ı göster
-    loadingText.innerText = "YÜKLENİYOR";
+    loaderWrapper.style.display = 'flex'; 
 
     loader.load(path, (gltf) => {
-        loaderWrapper.style.display = 'none'; // Yükleme bitince loader'ı gizle
+        loaderWrapper.style.display = 'none'; 
         if (currentModel) scene.remove(currentModel);
         currentModel = gltf.scene;
 
@@ -115,19 +116,23 @@ function loadModel(path) {
         scene.add(currentModel);
         
         const camDist = 10;
-        camera.position.set(0, 2, camDist);
+        camera.position.set(0, 1.5, camDist);
         controls.target.set(0, 0, 0);
         controls.update();
         
-    }, undefined, (e) => { 
-        loadingText.innerText = "HATA!";
+    }, undefined, () => { 
+        loaderWrapper.style.display = 'none';
+        alert("Model yüklenemedi.");
     });
 }
 
 document.getElementById('close-btn').onclick = () => {
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
-    if (currentModel) scene.remove(currentModel);
+    if (currentModel) {
+        scene.remove(currentModel);
+        currentModel = null;
+    }
 };
 
 init();
