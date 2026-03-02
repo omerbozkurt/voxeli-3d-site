@@ -2,87 +2,69 @@
     --matte-black: #121212;
     --deep-saffron: #FF9933;
     --soft-linen: #F5F5F7;
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass: rgba(255, 255, 255, 0.05);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+body { background: var(--matte-black); color: var(--soft-linen); overflow-x: hidden; }
 
-body {
-    background-color: var(--matte-black);
-    color: var(--soft-linen);
-    overflow-x: hidden;
-    /* Hafif Gren (Noise) Dokusu */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-}
+header { padding: 3rem 1rem; text-align: center; }
+header h1 { font-size: 2.8rem; font-weight: 200; letter-spacing: 4px; }
+.highlight { color: var(--deep-saffron); font-weight: 700; }
 
-/* Z-Ekseni Detayı */
-.z-axis-bg { position: fixed; inset: 0; pointer-events: none; z-index: -1; }
-.crosshair { position: absolute; color: rgba(255,255,255,0.1); font-size: 0.8rem; font-weight: 200; }
-
-header { padding: 4rem 2rem 2rem; text-align: center; }
-header h1 { font-size: 3.2rem; font-weight: 200; letter-spacing: 5px; margin-bottom: 0.5rem; }
-.highlight { color: var(--deep-saffron); font-weight: 500; }
-
-/* Grid & Kartlar */
 .menu-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 2rem; padding: 2rem; max-width: 1200px; margin: 0 auto 4rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem; padding: 2rem; max-width: 1100px; margin: 0 auto;
 }
 
 .menu-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border); border-radius: 20px;
-    overflow: hidden; cursor: pointer; transition: all 0.4s ease;
+    background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.3s;
 }
-
-.menu-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--deep-saffron);
-    box-shadow: 0 10px 30px rgba(255, 153, 51, 0.15);
-}
+.menu-card:hover { transform: translateY(-5px); border-color: var(--deep-saffron); }
 
 .card-image-container { width: 100%; aspect-ratio: 1/1; position: relative; overflow: hidden; }
-.menu-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: 0.5s; }
-.menu-card:hover img { opacity: 1; transform: scale(1.05); }
+.menu-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
 
-.card-info { padding: 1.5rem; text-align: center; }
-.card-info h3 { font-size: 1.1rem; font-weight: 300; margin-bottom: 0.5rem; letter-spacing: 1px; }
-.price { color: var(--deep-saffron); font-weight: 500; }
+.card-info { padding: 1.2rem; text-align: center; }
+.price { color: var(--deep-saffron); font-weight: 700; display: block; margin-top: 5px; }
 
-/* Modal */
 .modal {
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9);
-    display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(10px);
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+    display: flex; align-items: center; justify-content: center; z-index: 1000;
 }
 .modal.hidden { display: none; }
 
 .modal-glass {
-    background: rgba(25, 25, 25, 0.6); border: 1px solid rgba(255,255,255,0.1);
-    width: 90%; max-width: 500px; border-radius: 24px; position: relative; overflow: hidden;
+    background: #1e1e1e; width: 95%; max-width: 450px;
+    border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
 }
 
 .viewer-container { width: 100%; height: 350px; background: #000; position: relative; }
-.close-btn { position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; color: #555; cursor: pointer; z-index: 20; }
 
-.modal-info { padding: 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
-.info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-.modal-price-tag { color: var(--deep-saffron); font-size: 1.5rem; font-weight: 500; }
+/* Kapatma Butonu Kesin Çözüm */
+.close-btn { 
+    position: absolute; top: 15px; right: 20px; font-size: 2.8rem; 
+    z-index: 9999; cursor: pointer; color: #fff; line-height: 1;
+    background: rgba(0,0,0,0.3); width: 45px; height: 45px;
+    display: flex; align-items: center; justify-content: center; border-radius: 50%;
+}
 
-.nutrition-row { display: flex; gap: 15px; margin-bottom: 2rem; }
-.glass-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; flex: 1; }
-.glass-box strong { display: block; font-size: 0.6rem; text-transform: uppercase; color: var(--deep-saffron); margin-bottom: 4px; }
+.modal-info { padding: 1.5rem; }
+.nutrition-row { display: flex; gap: 10px; margin: 1.2rem 0; }
+.glass-box { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; flex: 1; border: 1px solid rgba(255,255,255,0.05); }
+.glass-box strong { display: block; color: var(--deep-saffron); font-size: 0.65rem; text-transform: uppercase; margin-bottom: 3px; }
 
-.action-buttons { display: flex; gap: 12px; }
+.action-buttons { display: flex; gap: 10px; }
 .ar-btn, .order-btn {
-    flex: 1; padding: 1.1rem; border-radius: 12px; font-weight: 500; text-transform: uppercase; cursor: pointer; transition: 0.3s; font-size: 0.8rem; text-decoration: none; text-align: center;
+    flex: 1; padding: 1.1rem; border-radius: 12px; font-weight: 700; font-size: 0.8rem;
+    text-transform: uppercase; cursor: pointer; text-decoration: none; text-align: center;
 }
 .ar-btn { background: transparent; border: 1px solid var(--deep-saffron); color: var(--deep-saffron); }
-.order-btn { background: var(--deep-saffron); color: var(--matte-black); border: none; }
+.order-btn { background: var(--deep-saffron); color: #000; border: none; }
 
 @media (max-width: 600px) {
-    .menu-container { grid-template-columns: repeat(2, 1fr); padding: 1rem; gap: 1rem; }
+    .menu-container { grid-template-columns: repeat(2, 1fr); padding: 1rem; gap: 0.8rem; }
     .action-buttons { flex-direction: column; }
 }
