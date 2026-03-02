@@ -2,12 +2,70 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+const themeBtn = document.getElementById('theme-toggle');
+themeBtn.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+    themeBtn.innerText = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
+});
+
+// HERO BÖLÜMÜNDEKİ "DÖNER" MODELİ
+function setupHero3D() {
+    const container = document.getElementById('hero-3d-viewer');
+    if (!container) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(0, 1.5, 8);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0xffffff, 2), new THREE.DirectionalLight(0xffffff, 1.5));
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 2.5;
+    controls.enableZoom = false;
+
+    const loader = new GLTFLoader();
+    loader.load('models/doner.glb', (gltf) => {
+        const model = gltf.scene;
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        model.scale.setScalar(4.5 / maxDim); 
+        scene.add(model);
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        if(container.clientWidth > 0) {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+    });
+}
+
+// MENÜ VE MODAL MANTIĞI
 const menuItems = [
-    { id: 1, name: "Hamburger", price: "220 ₺", cal: 650, ing: "Dana eti, Cheddar, Brioche", img: "images/hamburger.jpg", model: "models/hamburger.glb" },
-    { id: 2, name: "Pizza", price: "310 ₺", cal: 850, ing: "Mozzarella, Fesleğen, Sos", img: "images/pizza.jpg", model: "models/pizza.glb" },
-    { id: 3, name: "Cheesecake", price: "150 ₺", cal: 420, ing: "Labne, Frambuaz, Bisküvi", img: "images/cheesecake.jpg", model: "models/cheesecake.glb" },
-    { id: 4, name: "Sushi", price: "350 ₺", cal: 320, ing: "Somon, Pirinç, Nori", img: "images/sushi.jpg", model: "models/sushi.glb" },
-    { id: 5, name: "Taco", price: "240 ₺", cal: 480, ing: "Kıyma, Guacamole, Salsa", img: "images/taco.jpg", model: "models/taco.glb" }
+    { id: 1, name: "Hamburger", price: "220 ₺", cal: 650, ing: "Dana eti, Cheddar", img: "images/hamburger.jpg", model: "models/hamburger.glb" },
+    { id: 2, name: "Pizza", price: "310 ₺", cal: 850, ing: "Mozzarella, Fesleğen", img: "images/pizza.jpg", model: "models/pizza.glb" },
+    { id: 3, name: "Cheesecake", price: "150 ₺", cal: 420, ing: "Labne, Frambuaz", img: "images/cheesecake.jpg", model: "models/cheesecake.glb" },
+    { id: 4, name: "Sushi", price: "350 ₺", cal: 320, ing: "Somon, Pirinç", img: "images/sushi.jpg", model: "models/sushi.glb" },
+    { id: 5, name: "Taco", price: "240 ₺", cal: 480, ing: "Kıyma, Guacamole", img: "images/taco.jpg", model: "models/taco.glb" }
 ];
 
 const container = document.getElementById('menu-container');
@@ -15,13 +73,16 @@ const modal = document.getElementById('model-modal');
 const viewerContainer = document.getElementById('3d-viewer');
 const loaderWrapper = document.getElementById('loader-wrapper');
 
-let scene, camera, renderer, controls, currentModel;
+let modalScene, modalCamera, modalRenderer, modalControls, currentModalModel;
 
 function init() {
+    setupHero3D();
+    
     container.innerHTML = '';
     menuItems.forEach(item => {
         const div = document.createElement('div');
         div.className = 'menu-card';
+        // 3D KEŞFET ibaresi 3D olarak güncellendi
         div.innerHTML = `
             <div class="card-image-container">
                 <img src="${item.img}" alt="${item.name}">
@@ -37,6 +98,7 @@ function init() {
 }
 
 function openModal(item) {
+    // JavaScript artık HTML'deki modal-calories ve modal-ingredients alanlarını sorunsuz bulup doldurur.
     document.getElementById('modal-title').innerText = item.name;
     document.getElementById('modal-price').innerText = item.price;
     document.getElementById('modal-calories').innerText = item.cal;
@@ -44,14 +106,10 @@ function openModal(item) {
     
     const arLink = document.getElementById('ar-link');
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/');
-    const modelUrl = baseUrl + item.model;
+    const modelUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/') + item.model;
 
     if (isIOS) {
-        arLink.onclick = (e) => {
-            e.preventDefault();
-            alert("iOS AR (USDZ) modelleri hazırlanıyor. Android'de hemen deneyebilirsiniz!");
-        };
+        arLink.onclick = (e) => { e.preventDefault(); alert("iOS AR modelleri hazırlanıyor!"); };
         arLink.href = "#";
     } else {
         arLink.onclick = null;
@@ -60,79 +118,61 @@ function openModal(item) {
 
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    setup3D();
-    loadModel(item.model);
+    setupModal3D();
+    loadModalModel(item.model);
 }
 
-function setup3D() {
-    if (scene) return;
-    scene = new THREE.Scene();
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    renderer.setSize(viewerContainer.clientWidth, viewerContainer.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    viewerContainer.appendChild(renderer.domElement);
+function setupModal3D() {
+    if (modalScene) return;
+    modalScene = new THREE.Scene();
+    modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    modalRenderer.setSize(viewerContainer.clientWidth, viewerContainer.clientHeight);
+    modalRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    viewerContainer.appendChild(modalRenderer.domElement);
 
-    camera = new THREE.PerspectiveCamera(40, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.01, 1000);
-    camera.position.set(0, 2, 10);
+    modalCamera = new THREE.PerspectiveCamera(40, viewerContainer.clientWidth / viewerContainer.clientHeight, 0.1, 1000);
+    modalCamera.position.set(0, 1.5, 10);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 1.5), new THREE.DirectionalLight(0xffffff, 1.5));
+    modalScene.add(new THREE.AmbientLight(0xffffff, 1.5), new THREE.DirectionalLight(0xffffff, 1.5));
     
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.autoRotate = true;
+    modalControls = new OrbitControls(modalCamera, modalRenderer.domElement);
+    modalControls.enableDamping = true;
+    modalControls.autoRotate = true;
 
     function animate() {
         requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
+        modalControls.update();
+        modalRenderer.render(modalScene, modalCamera);
     }
     animate();
 }
 
-function loadModel(path) {
+function loadModalModel(path) {
     const loader = new GLTFLoader();
     loaderWrapper.style.display = 'flex'; 
 
     loader.load(path, (gltf) => {
         loaderWrapper.style.display = 'none'; 
-        if (currentModel) scene.remove(currentModel);
-        currentModel = gltf.scene;
-
-        currentModel.traverse((child) => {
-            if (child.isMesh) {
-                child.material.side = THREE.DoubleSide;
-                child.frustumCulled = false;
-            }
-        });
-
-        const box = new THREE.Box3().setFromObject(currentModel);
+        if (currentModalModel) modalScene.remove(currentModalModel);
+        currentModalModel = gltf.scene;
+        
+        const box = new THREE.Box3().setFromObject(currentModalModel);
         const center = box.getCenter(new THREE.Vector3());
-        currentModel.position.sub(center);
+        currentModalModel.position.sub(center);
         
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        currentModel.scale.setScalar(4.0 / maxDim); 
+        currentModalModel.scale.setScalar(4.0 / maxDim); 
         
-        scene.add(currentModel);
-        
-        const camDist = 10;
-        camera.position.set(0, 1.5, camDist);
-        controls.target.set(0, 0, 0);
-        controls.update();
-        
-    }, undefined, () => { 
-        loaderWrapper.style.display = 'none';
-        alert("Model yüklenemedi.");
-    });
+        modalScene.add(currentModalModel);
+        modalControls.update();
+    }, undefined, () => { loaderWrapper.style.display = 'none'; });
 }
 
 document.getElementById('close-btn').onclick = () => {
     modal.classList.add('hidden');
     document.body.style.overflow = 'auto';
-    if (currentModel) {
-        scene.remove(currentModel);
-        currentModel = null;
-    }
+    if (currentModalModel) { modalScene.remove(currentModalModel); currentModalModel = null; }
 };
 
 init();
