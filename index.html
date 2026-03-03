@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>VOXELI 3D | Restoranlar İçin Dijital Menü</title>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com">
-    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,15 +17,12 @@
             <a href="#home" class="nav-item">Ana Sayfa</a>
             <a href="#services" class="nav-item">Hizmetler</a>
             <a href="#how-it-works" class="nav-item">Nasıl Çalışır?</a>
-            <a href="#pricing" class="nav-item">Paketler</a>
             <a href="#contact" class="nav-item">İletişim</a>
         </div>
         <div class="nav-actions">
             <button id="theme-toggle" class="theme-btn" aria-label="Tema Değiştir">🌙</button>
-            <a href="#menu-section" class="demo-btn hide-on-mobile">Canlı Demo</a>
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
-            </div>
+            <a href="#menu-section" class="demo-btn">Canlı Demo</a>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
         </div>
     </nav>
 
@@ -36,14 +31,10 @@
             <div class="hero-content">
                 <span class="badge">DİJİTAL MENÜDE DEVRİM</span>
                 <h1>Menünüzü Üç Boyutlu <br><span class="highlight">Yaşatın</span></h1>
-                <p class="hero-desc">Müşterileriniz masaya oturmadan önce yemeğin her detayını <strong>3D</strong> ve <strong>Artırılmış Gerçeklik (AR)</strong> ile görsün. Satışlarınızı artıracak etkileşimli dijital menü deneyimiyle tanışın.</p>
+                <p class="hero-desc">Müşterileriniz masaya oturmadan önce yemeğin her detayını <strong>3D</strong> ve <strong>Artırılmış Gerçeklik (AR)</strong> ile görsün.</p>
                 <div class="hero-btns">
-                    <a href="#contact" class="primary-btn">Hemen Kaydol</a>
-                    <a href="#pricing" class="secondary-btn">Paketleri İncele</a>
-                </div>
-                <div class="trust-indicator">
-                    <div class="stars">★★★★★</div>
-                    <span><strong>100+</strong> Restoran Tarafından Kullanılıyor</span>
+                    <a href="#contact" class="primary-btn">İletişime Geç</a>
+                    <a href="#menu-section" class="secondary-btn">Demoyu Gör</a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -55,193 +46,79 @@
     <section id="services" class="services-area render-optimize">
         <div class="section-title">
             <h2>Sıradan Menüleri Dijital Bir Satış Makinesine Dönüştürün</h2>
-            <p class="section-desc">Statik görsellerin ötesine geçin. Müşterilerinize masalarında interaktif bir şölen sunarak sipariş kararlarını <strong>%30'a kadar</strong> hızlandırın.</p>
+            <p class="section-desc">Sipariş kararlarını <strong>%30'a kadar</strong> hızlandırın.</p>
         </div>
         <div class="modern-services">
-            <div class="modern-service-card">
-                <div class="card-glow"></div>
-                <div class="ms-icon">01</div>
-                <div class="ms-content">
-                    <h3>Hiper-Gerçekçi 3D Modelleme</h3>
-                    <p>Tabağınızdaki her detayı dijital sanata dönüştürüyoruz. Müşterileriniz yemeğin dokusunu adeta hissederek sipariş versin.</p>
-                </div>
-            </div>
-            <div class="modern-service-card">
-                <div class="card-glow"></div>
-                <div class="ms-icon">02</div>
-                <div class="ms-content">
-                    <h3>Uygulamasız WebAR Deneyimi</h3>
-                    <p>Saniyeler İçinde AR Deneyimi: İndirme Yok, Bekleme Yok. Müşterileriniz QR kod okutarak yemeği masasında gerçek boyutlarıyla görüntüler.</p>
-                </div>
-            </div>
-            <div class="modern-service-card">
-                <div class="card-glow"></div>
-                <div class="ms-icon">03</div>
-                <div class="ms-content">
-                    <h3>Dönüşüm Odaklı UI/UX Tasarım</h3>
-                    <p>Göz Alıcı Tasarım, Maksimum Satış Performansı. Saniyenin altında yüklenen ve kullanıcıyı pürüzsüz bir akışla siparişe yönlendiren akıllı arayüzler.</p>
-                </div>
-            </div>
-            <div class="modern-service-card">
-                <div class="card-glow"></div>
-                <div class="ms-icon">04</div>
-                <div class="ms-content">
-                    <h3>Veri Analitiği ve SEO Altyapısı</h3>
-                    <p>Hangi Yemeğiniz Daha Çok İlgi Görüyor? Verilerle Görün. Yerel aramalarda restoranınızı öne çıkaran SEO mimarisi ve detaylı analiz raporları.</p>
-                </div>
-            </div>
+            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">01</div><div class="ms-content"><h3>Hiper-Gerçekçi 3D Modelleme</h3><p>Tabağınızdaki her detayı dijital sanata dönüştürüyoruz.</p></div></div>
+            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">02</div><div class="ms-content"><h3>Uygulamasız WebAR Deneyimi</h3><p>QR kod okutarak yemeği masasında gerçek boyutlarıyla görüntüler.</p></div></div>
+            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">03</div><div class="ms-content"><h3>Dönüşüm Odaklı UI/UX Tasarım</h3><p>Saniyenin altında yüklenen akıllı arayüzler.</p></div></div>
+            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">04</div><div class="ms-content"><h3>Veri Analitiği ve SEO</h3><p>Hangi yemeğiniz daha çok ilgi görüyor? Verilerle görün.</p></div></div>
         </div>
     </section>
 
     <section id="how-it-works" class="how-it-works-area render-optimize">
-        <div class="section-title">
-            <h2>Nasıl Çalışır?</h2>
-            <p class="section-desc">Markanızı geleceğe taşımak sadece 3 basit adımdan oluşuyor.</p>
-        </div>
+        <div class="section-title"><h2>Nasıl Çalışır?</h2></div>
         <div class="staggered-steps-container">
-            <div class="staggered-step-card">
-                <div class="bg-number">01</div>
-                <div class="step-content">
-                    <h3>3D Modelleme</h3>
-                    <p>Menünüzdeki imza ürünleri özel tarama teknolojileriyle yüksek kalitede üç boyutlu modellere dönüştürüyoruz.</p>
-                </div>
-            </div>
-            <div class="staggered-step-card">
-                <div class="bg-number">02</div>
-                <div class="step-content">
-                    <h3>Dijital Entegrasyon</h3>
-                    <p>Modellerinizi, markanıza özel tasarladığımız ışık hızında çalışan modern web sitenize entegre ediyoruz.</p>
-                </div>
-            </div>
-            <div class="staggered-step-card">
-                <div class="bg-number">03</div>
-                <div class="step-content">
-                    <h3>Masada AR Deneyimi</h3>
-                    <p>Müşterileriniz QR kodu okutarak hiçbir uygulama indirmeden yemekleri masasında görür ve kolayca sipariş verir.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="pricing-area render-optimize">
-        <div class="section-title">
-            <h2>Size Uygun Paketi Seçin</h2>
-        </div>
-        <div class="pricing-grid">
-            <div class="price-card">
-                <h3>Dijital Menü</h3>
-                <p class="desc">Fiziksel menülerden kurtulup dijitalleşmeye ilk adımı atmak isteyenler için.</p>
-                <div class="price-value">499 ₺ <span>/ay</span></div>
-                <ul class="features">
-                    <li>Sınırsız Kategori ve Ürün</li>
-                    <li>Dinamik QR Kod Entegrasyonu</li>
-                    <li>Karanlık & Aydınlık Mod Desteği</li>
-                    <li>Örnek 3 Adet 3D Model Hediyesi</li>
-                </ul>
-                <button class="price-btn">Hemen Başla</button>
-            </div>
-            <div class="price-card featured">
-                <div class="pop-badge">Lansmana Özel Kampanya!</div>
-                <h3>Pro Paket</h3>
-                <p class="desc">AR teknolojisiyle rakiplerinin önüne geçmek isteyen işletmeler için.</p>
-                <div class="price-value"><span class="old-price">1.250 ₺</span> 749 ₺ <span>/ay</span></div>
-                <div class="discount-badge">İlk 50 İşletmeye Özel İndirim</div>
-                <ul class="features">
-                    <li>Dijital Menü'deki Tüm Özellikler +</li>
-                    <li>Sınırsız AR (Artırılmış Gerçeklik)</li>
-                    <li>25 Adet Profesyonel 3D Model</li>
-                    <li>Akıllı Sipariş Akışı</li>
-                    <li>Detaylı Analitik Raporlama</li>
-                </ul>
-                <button class="price-btn highlight-btn">Kampanyadan Yararlan</button>
-            </div>
-            <div class="price-card">
-                <h3>Kurumsal Çözüm</h3>
-                <p class="desc">Kendi ekosistemini kurmak isteyen zincir restoranlar için.</p>
-                <div class="price-value">Özel Proje</div>
-                <ul class="features" style="margin-top: 35px;">
-                    <li>Pro Paket'teki Tüm Özellikler +</li>
-                    <li>Sınırsız 3D Model Üretimi</li>
-                    <li>Çoklu Lokasyon Yönetimi</li>
-                    <li>Mevcut POS Entegrasyonu</li>
-                    <li>Özelleştirilmiş Arayüz</li>
-                </ul>
-                <button class="price-btn">Özel Teklif İsteyin</button>
-            </div>
+            <div class="staggered-step-card"><div class="bg-number">01</div><div class="step-content"><h3>3D Modelleme</h3><p>Ürünleri yüksek kalitede tarıyoruz.</p></div></div>
+            <div class="staggered-step-card"><div class="bg-number">02</div><div class="step-content"><h3>Entegrasyon</h3><p>Markanıza özel web sitenize ekliyoruz.</p></div></div>
+            <div class="staggered-step-card"><div class="bg-number">03</div><div class="step-content"><h3>Masada AR</h3><p>QR ile anında masada görüntüleme.</p></div></div>
         </div>
     </section>
 
     <section id="menu-section" class="menu-area render-optimize">
-        <div class="section-title">
-            <h2>Canlı Deneyim</h2>
-        </div>
+        <div class="section-title"><h2>Canlı Deneyim</h2></div>
         <main class="menu-container" id="menu-container"></main>
     </section>
 
     <section id="contact" class="contact-area render-optimize">
         <div class="section-title">
-            <h2>Bize Ulaşın</h2>
+            <span class="badge">İLETİŞİM</span>
+            <h2>Geleceği Birlikte Kuralım</h2>
+            <p class="section-desc">Restoranınızı dijital dünyaya taşımak için bir mesaj uzağınızdayız.</p>
         </div>
-        <form class="bento-contact-grid" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
-            <div class="bento-card bento-text">
-                <h3>VOXELI 3D Ekibi Sizi Bekliyor</h3>
-                <p>Aklınızdaki soruları sorun, restoranınızı geleceğe taşıyacak dijital ekosistemi hemen bugün planlamaya başlayalım.</p>
-            </div>
-            <div class="bento-card bento-address">
-                <div class="bento-icon">📍</div>
-                <div class="bento-address-info">
-                    <h4>Ar-Ge Ofisi</h4>
-                    <p>İskenderun Teknik<br>Üniversitesi</p>
+
+        <div class="contact-wrapper">
+            <div class="contact-info-side">
+                <div class="info-content">
+                    <h3>VOXELI 3D</h3>
+                    <p>Üç boyutlu menü deneyimiyle tanışmak ve işletmenizi modernize etmek için formu doldurabilirsiniz.</p>
+                    <div class="contact-methods">
+                        <div class="method-item"><small>E-POSTA</small><a href="mailto:hello@voxeli3d.com">hello@voxeli3d.com</a></div>
+                        <div class="method-item"><small>SOSYAL MEDYA</small><div class="social-links"><a href="#">Instagram</a><a href="#">LinkedIn</a></div></div>
+                    </div>
                 </div>
             </div>
-            <div class="bento-card bento-input-wrap">
-                <input type="text" placeholder="Adınız Soyadınız" required>
-            </div>
-            <div class="bento-card bento-input-wrap">
-                <input type="text" placeholder="İşletme Adı">
-            </div>
-            <div class="bento-card bento-input-wrap">
-                <input type="email" placeholder="E-Posta Adresiniz" required>
-            </div>
-            <div class="bento-card bento-textarea-wrap">
-                <textarea placeholder="Nasıl yardımcı olabiliriz?" required></textarea>
-            </div>
-            <button type="submit" class="bento-card bento-submit">
-                Gönder <span class="submit-arrow">↗</span>
-            </button>
-        </form>
+            <form class="contact-form-side" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
+                <div class="input-group"><input type="text" id="name" required><label for="name">Adınız Soyadınız</label></div>
+                <div class="input-group"><input type="email" id="email" required><label for="email">E-posta Adresiniz</label></div>
+                <div class="input-group"><textarea id="message" rows="4" required></textarea><label for="message">Mesajınız</label></div>
+                <button type="submit" class="minimal-submit-btn">
+                    <span>Gönder</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </form>
+        </div>
     </section>
 
     <div id="model-modal" class="modal hidden">
         <div class="modal-glass">
             <div id="close-btn" class="close-btn">&times;</div>
-            <div id="3d-viewer" class="viewer-container">
-                <div id="loader-wrapper"><div class="spinner"></div></div>
-            </div>
+            <div id="3d-viewer" class="viewer-container"><div id="loader-wrapper"><div class="spinner"></div></div></div>
             <div class="modal-info">
-                <div class="info-header">
-                    <h2 id="modal-title"></h2>
-                    <span id="modal-price" class="modal-price-tag"></span>
-                </div>
+                <div class="info-header"><h2 id="modal-title"></h2><span id="modal-price" class="modal-price-tag"></span></div>
                 <div class="nutrition-row">
                     <div class="glass-box"><strong>Enerji</strong><span id="modal-calories"></span> kcal</div>
                     <div class="glass-box"><strong>İçindekiler</strong><span id="modal-ingredients"></span></div>
                 </div>
                 <div class="action-buttons">
-                    <a id="ar-link" href="#" class="ar-btn">🧊 Masamda Göster</a>
-                    <button class="order-btn">Sepete Ekle</button>
+                    <a id="ar-link" href="#" class="ar-btn">🧊 Masamda Gör</a>
+                    <button class="order-btn">Sipariş Ver</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer style="text-align:center; padding: 2rem; border-top: 1px solid var(--border-color); color:var(--text-muted); font-size:0.8rem;">
-        <p>&copy; 2026 VOXELI 3D | Dijital Dönüşüm Partneriniz.</p>
-    </footer>
-
-    <script type="importmap">
-        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
-    </script>
+    <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
     <script type="module" src="script.js"></script>
 </body>
 </html>
