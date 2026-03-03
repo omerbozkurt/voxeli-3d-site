@@ -41,7 +41,13 @@ function init() {
     renderer.xr.enabled = true;
     container.appendChild(renderer.domElement);
 
-    document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }));
+    // AR Butonu oluşturulurken destek kontrolü
+    const arButton = ARButton.createButton(renderer, { 
+        requiredFeatures: ['hit-test'],
+        optionalFeatures: ['dom-overlay'],
+        domOverlay: { root: document.getElementById('ui-container') }
+    });
+    document.body.appendChild(arButton);
 
     loadModel();
 
@@ -62,6 +68,10 @@ function init() {
     renderer.xr.addEventListener('sessionstart', () => {
         instructionText.innerText = "Kamerayı masaya tutup yavaşça hareket ettirin.";
     });
+
+    renderer.xr.addEventListener('sessionend', () => {
+        instructionText.innerText = "AR Oturumu Bitti.";
+    });
 }
 
 function loadModel() {
@@ -74,9 +84,12 @@ function loadModel() {
         foodModel.scale.setScalar(0.3 / maxDim); 
         
         loaderUI.style.display = 'none';
-        instructionText.innerText = "AR Deneyimine Başlamak İçin Butona Basın";
+        // Bilgisayarda iseniz bu yazı görünür kalacaktır çünkü AR başlatılamaz.
+        instructionText.innerText = "Model Hazır. AR Başlatmak İçin 'Start AR' Butonuna Basın (Sadece Mobil).";
     }, undefined, function (error) {
-        instructionText.innerText = "Model Yüklenemedi.";
+        console.error("Model Yükleme Hatası:", error);
+        loaderUI.style.display = 'none';
+        instructionText.innerText = "Hata: Model dosyası bulunamadı (" + modelName + ")";
     });
 }
 

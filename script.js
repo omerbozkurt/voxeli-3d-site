@@ -16,7 +16,7 @@ const navItems = document.querySelectorAll('.nav-item');
 hamburgerBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
 navItems.forEach(item => { item.addEventListener('click', () => { navLinks.classList.remove('active'); }); });
 
-// --- HERO BÖLÜMÜ (DÖNER) ---
+// --- HERO BÖLÜMÜ ---
 function setupHero3D() {
     const container = document.getElementById('hero-3d-viewer');
     if (!container) return;
@@ -73,7 +73,7 @@ window.addEventListener('load', setupHero3D);
 const menuItems = [
     { id: 1, name: "Hamburger", price: "220 ₺", cal: 650, ing: "Dana eti, Cheddar", img: "images/hamburger.jpg", model: "models/hamburger.glb" },
     { id: 2, name: "Pizza", price: "310 ₺", cal: 850, ing: "Mozzarella, Fesleğen", img: "images/pizza.jpg", model: "models/pizza.glb" },
-    { id: 3, name: "Cheesecake", price: "150 ₺", cal: 420, ing: "Labne, Frambuaz", img: "images/cheesecake.jpg", model: "models/cheesecake.glb" },
+    { id: 3, name: "Cheesecake", price: "150 ₺", cal: 420, img: "Labne, Frambuaz", img: "images/cheesecake.jpg", model: "models/cheesecake.glb" },
     { id: 4, name: "Sushi", price: "350 ₺", cal: 320, ing: "Somon, Pirinç", img: "images/sushi.jpg", model: "models/sushi.glb" },
     { id: 5, name: "Taco", price: "240 ₺", cal: 480, ing: "Kıyma, Guacamole", img: "images/taco.jpg", model: "models/taco.glb" }
 ];
@@ -111,18 +111,26 @@ function openModal(item) {
     document.getElementById('modal-ingredients').innerText = item.ing;
     
     const arLink = document.getElementById('ar-link');
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     
-    // Modelin ismini URL'den alıp yeni WebXR sayfamıza yolluyoruz
+    // iOS Tespiti
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const modelFileName = item.model.split('/').pop().replace('.glb', '');
 
     if (isIOS) {
-        arLink.onclick = (e) => { e.preventDefault(); alert("iOS AR modelleri hazırlanıyor!"); };
-        arLink.href = "#";
-    } else {
+        // iOS: Quick Look için USDZ yönlendirmesi
+        arLink.href = `models/${modelFileName}.usdz`;
+        arLink.setAttribute('rel', 'ar');
+        // Safari'nin AR ikonunu göstermesi için boş bir img gerekebilir
+        const arImg = document.createElement('img');
+        arImg.src = item.img;
+        arImg.style.display = 'none';
+        arLink.appendChild(arImg);
         arLink.onclick = null;
-        // Tıklandığında kendi WebXR AR (ar-viewer.html) sayfamıza gönderir
+    } else {
+        // Android/WebXR: Mevcut WebXR Viewer yönlendirmesi
+        arLink.removeAttribute('rel');
         arLink.href = `ar-viewer.html?model=${modelFileName}`;
+        arLink.onclick = null;
     }
 
     modal.classList.remove('hidden');
