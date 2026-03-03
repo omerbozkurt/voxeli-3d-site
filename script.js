@@ -42,7 +42,7 @@ function setupHero3D() {
     controls.enableZoom = false;
 
     const loader = new GLTFLoader();
-    loader.load('models/doner.glb', (gltf) => {
+    loader.load('models/pizza.glb', (gltf) => {
         const model = gltf.scene;
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());

@@ -70,35 +70,40 @@
         <main class="menu-container" id="menu-container"></main>
     </section>
 
-    <section id="contact" class="contact-area render-optimize">
-        <div class="section-title">
+<section id="contact" class="contact-area render-optimize">
+    <div class="contact-split-container">
+        <div class="contact-brand-side">
             <span class="badge">İLETİŞİM</span>
-            <h2>Geleceği Birlikte Kuralım</h2>
-            <p class="section-desc">Restoranınızı dijital dünyaya taşımak için bir mesaj uzağınızdayız.</p>
-        </div>
-
-        <div class="contact-wrapper">
-            <div class="contact-info-side">
-                <div class="info-content">
-                    <h3>VOXELI 3D</h3>
-                    <p>Üç boyutlu menü deneyimiyle tanışmak ve işletmenizi modernize etmek için formu doldurabilirsiniz.</p>
-                    <div class="contact-methods">
-                        <div class="method-item"><small>E-POSTA</small><a href="mailto:hello@voxeli3d.com">hello@voxeli3d.com</a></div>
-                        <div class="method-item"><small>SOSYAL MEDYA</small><div class="social-links"><a href="#">Instagram</a><a href="#">LinkedIn</a></div></div>
-                    </div>
+            <h2>Bir kahve eşliğinde <br><span class="highlight">geleceği</span> konuşalım.</h2>
+            <p>İşletmenizi 3D dünyasına taşımak için hazırız.</p>
+            
+            <div class="direct-contact">
+                <a href="mailto:hello@voxeli3d.com" class="contact-link">hello@voxeli3d.com</a>
+                <div class="mini-social">
+                    <a href="#">Instagram</a>
+                    <span>/</span>
+                    <a href="#">LinkedIn</a>
                 </div>
             </div>
-            <form class="contact-form-side" onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi!');">
-                <div class="input-group"><input type="text" id="name" required><label for="name">Adınız Soyadınız</label></div>
-                <div class="input-group"><input type="email" id="email" required><label for="email">E-posta Adresiniz</label></div>
-                <div class="input-group"><textarea id="message" rows="4" required></textarea><label for="message">Mesajınız</label></div>
-                <button type="submit" class="minimal-submit-btn">
-                    <span>Gönder</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </form>
         </div>
-    </section>
+
+        <form class="contact-form-minimal" onsubmit="event.preventDefault(); alert('Mesajınız alındı!');">
+            <div class="input-row">
+                <input type="text" placeholder="Adınız" required>
+            </div>
+            <div class="input-row">
+                <input type="email" placeholder="E-posta Adresiniz" required>
+            </div>
+            <div class="input-row">
+                <textarea placeholder="Mesajınız" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="clean-submit-btn">
+                Gönder
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+        </form>
+    </div>
+</section>
 
     <div id="model-modal" class="modal hidden">
         <div class="modal-glass">
