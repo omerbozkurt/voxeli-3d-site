@@ -4,16 +4,20 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // --- GECE/GÜNDÜZ VE MOBİL MENÜ ---
 const themeBtn = document.getElementById('theme-toggle');
-themeBtn.addEventListener('click', () => {
-    document.body.classList.toggle('light-mode');
-    themeBtn.innerText = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
-});
+if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        themeBtn.innerText = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
+    });
+}
 
 const hamburgerBtn = document.getElementById('hamburger');
 const navLinks = document.getElementById('nav-links');
 const navItems = document.querySelectorAll('.nav-item');
 
-hamburgerBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+if (hamburgerBtn) {
+    hamburgerBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+}
 navItems.forEach(item => { item.addEventListener('click', () => { navLinks.classList.remove('active'); }); });
 
 // --- HERO BÖLÜMÜ ---
@@ -25,7 +29,7 @@ function setupHero3D() {
     const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
     camera.position.set(0, 1.5, 8);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
@@ -35,7 +39,6 @@ function setupHero3D() {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 2.5;
     controls.enableZoom = false;
 
     const loader = new GLTFLoader();
@@ -44,7 +47,6 @@ function setupHero3D() {
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
-        
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
         model.scale.setScalar(4.5 / maxDim); 
@@ -57,19 +59,11 @@ function setupHero3D() {
         renderer.render(scene, camera);
     }
     animate();
-
-    window.addEventListener('resize', () => {
-        if(container.clientWidth > 0) {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        }
-    });
 }
 
 window.addEventListener('load', setupHero3D);
 
-// --- MENÜ VE MODAL MANTIĞI ---
+// --- MENÜ VE MODAL ---
 const menuItems = [
     { id: 1, name: "Hamburger", price: "220 ₺", cal: 650, ing: "Dana eti, Cheddar", img: "images/hamburger.jpg", model: "models/hamburger.glb" },
     { id: 2, name: "Pizza", price: "310 ₺", cal: 850, ing: "Mozzarella, Fesleğen", img: "images/pizza.jpg", model: "models/pizza.glb" },
@@ -86,13 +80,14 @@ const loaderWrapper = document.getElementById('loader-wrapper');
 let modalScene, modalCamera, modalRenderer, modalControls, currentModalModel;
 
 function init() {
+    if (!container) return;
     container.innerHTML = '';
     menuItems.forEach(item => {
         const div = document.createElement('div');
         div.className = 'menu-card';
         div.innerHTML = `
             <div class="card-image-container">
-                <img src="${item.img}" alt="${item.name}" loading="lazy" decoding="async">
+                <img src="${item.img}" alt="${item.name}" loading="lazy">
                 <div class="spatial-badge">3D</div>
             </div>
             <div class="card-info">
@@ -111,26 +106,17 @@ function openModal(item) {
     document.getElementById('modal-ingredients').innerText = item.ing;
     
     const arLink = document.getElementById('ar-link');
-    
-    // iOS Tespiti
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const modelFileName = item.model.split('/').pop().replace('.glb', '');
 
     if (isIOS) {
-        // iOS: Quick Look için USDZ yönlendirmesi
-        arLink.href = `models/${modelFileName}.usdz`;
+        // iOS: #allowsContentScaling=0 ekleyerek modelin devasa olmasını engelliyoruz
+        arLink.href = `models/${modelFileName}.usdz#allowsContentScaling=0`;
         arLink.setAttribute('rel', 'ar');
-        // Safari'nin AR ikonunu göstermesi için boş bir img gerekebilir
-        const arImg = document.createElement('img');
-        arImg.src = item.img;
-        arImg.style.display = 'none';
-        arLink.appendChild(arImg);
-        arLink.onclick = null;
+        arLink.innerHTML = `🧊 Masamda Gör <img src="${item.img}" style="display:none">`;
     } else {
-        // Android/WebXR: Mevcut WebXR Viewer yönlendirmesi
         arLink.removeAttribute('rel');
         arLink.href = `ar-viewer.html?model=${modelFileName}`;
-        arLink.onclick = null;
     }
 
     modal.classList.remove('hidden');
@@ -142,7 +128,7 @@ function openModal(item) {
 function setupModal3D() {
     if (modalScene) return;
     modalScene = new THREE.Scene();
-    modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    modalRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     modalRenderer.setSize(viewerContainer.clientWidth, viewerContainer.clientHeight);
     modalRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     viewerContainer.appendChild(modalRenderer.domElement);
@@ -171,17 +157,14 @@ function loadModalModel(path) {
         loaderWrapper.style.display = 'none'; 
         if (currentModalModel) modalScene.remove(currentModalModel);
         currentModalModel = gltf.scene;
-        
         const box = new THREE.Box3().setFromObject(currentModalModel);
         const center = box.getCenter(new THREE.Vector3());
         currentModalModel.position.sub(center);
-        
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
+        // Modal içindeki önizleme ölçeği
         currentModalModel.scale.setScalar(4.0 / maxDim); 
-        
         modalScene.add(currentModalModel);
-        modalControls.update();
     }, undefined, () => { loaderWrapper.style.display = 'none'; });
 }
 
