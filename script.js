@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import gsap from 'gsap';
 
 // --- GECE/GÜNDÜZ VE MOBİL MENÜ ---
 const themeBtn = document.getElementById('theme-toggle');
@@ -36,26 +37,78 @@ function setupHero3D() {
 
     scene.add(new THREE.AmbientLight(0xffffff, 2), new THREE.DirectionalLight(0xffffff, 1.5));
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.autoRotate = true;
-    controls.enableZoom = false;
+    // Kontrolleri Parallax için kapattık, kamerayı fare/cihaz ivmesi ile yöneteceğiz.
+    // const controls = new OrbitControls(camera, renderer.domElement); 
+
+    let loadedModel;
+    let mouseX = 0;
+    let mouseY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
 
     const loader = new GLTFLoader();
     loader.load('models/pizza.glb', (gltf) => {
-        const model = gltf.scene;
-        const box = new THREE.Box3().setFromObject(model);
+        loadedModel = gltf.scene;
+        const box = new THREE.Box3().setFromObject(loadedModel);
         const center = box.getCenter(new THREE.Vector3());
-        model.position.sub(center);
+        loadedModel.position.sub(center);
+        
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        model.scale.setScalar(4.5 / maxDim); 
-        scene.add(model);
+        const targetScale = 4.5 / maxDim; 
+        
+        // Model başlangıçta 0 boyutunda
+        loadedModel.scale.setScalar(0); 
+        scene.add(loadedModel);
+
+        // GSAP ile Premium "Pop" Animasyonu
+        gsap.to(loadedModel.scale, {
+            x: targetScale,
+            y: targetScale,
+            z: targetScale,
+            duration: 1.5,
+            ease: "elastic.out(1, 0.4)", // Tatmin edici esneme
+            delay: 0.2
+        });
+        
+        // Objeye sürekli hafif bir süzülme (float) animasyonu ekliyoruz
+        gsap.to(loadedModel.position, {
+            y: "+=0.2",
+            duration: 2,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+        });
+    });
+
+    // Masaüstü için Mouse Takibi
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX) / windowHalfX;
+        mouseY = (event.clientY - windowHalfY) / windowHalfY;
+    });
+
+    // Mobil için Jiroskop (Gyroscope) Takibi
+    window.addEventListener('deviceorientation', (event) => {
+        // Gamma (sol-sağ eğim), Beta (ön-arka eğim)
+        if (event.gamma !== null && event.beta !== null) {
+            mouseX = event.gamma / 45; // -45 ile 45 derece arası normalize
+            mouseY = (event.beta - 45) / 45; 
+        }
     });
 
     function animate() {
         requestAnimationFrame(animate);
-        controls.update();
+        
+        if (loadedModel) {
+            // Objeyi kendi etrafında yavaşça döndürmeye devam et
+            loadedModel.rotation.y += 0.005;
+
+            // Parallax Etkisi: Mouse veya Jiroskop verisine göre kamerayı yumuşakça hareket ettir (Lerp)
+            camera.position.x += (mouseX * 2 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 2 + 1.5 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+        }
+
         renderer.render(scene, camera);
     }
     animate();
@@ -67,7 +120,7 @@ window.addEventListener('load', setupHero3D);
 const menuItems = [
     { id: 1, name: "Hamburger", price: "220 ₺", cal: 650, ing: "Dana eti, Cheddar", img: "images/hamburger.jpg", model: "models/hamburger.glb" },
     { id: 2, name: "Pizza", price: "310 ₺", cal: 850, ing: "Mozzarella, Fesleğen", img: "images/pizza.jpg", model: "models/pizza.glb" },
-    { id: 3, name: "Cheesecake", price: "150 ₺", cal: 420, img: "Labne, Frambuaz", img: "images/cheesecake.jpg", model: "models/cheesecake.glb" },
+    { id: 3, name: "Cheesecake", price: "150 ₺", cal: 420, ing: "Labne, Frambuaz", img: "images/cheesecake.jpg", model: "models/cheesecake.glb" },
     { id: 4, name: "Sushi", price: "350 ₺", cal: 320, ing: "Somon, Pirinç", img: "images/sushi.jpg", model: "models/sushi.glb" },
     { id: 5, name: "Taco", price: "240 ₺", cal: 480, ing: "Kıyma, Guacamole", img: "images/taco.jpg", model: "models/taco.glb" }
 ];
@@ -110,7 +163,6 @@ function openModal(item) {
     const modelFileName = item.model.split('/').pop().replace('.glb', '');
 
     if (isIOS) {
-        // iOS: allowsContentScaling=0 ile boyutu sabitliyoruz
         arLink.href = `models/${modelFileName}.usdz#allowsContentScaling=0`;
         arLink.setAttribute('rel', 'ar');
         arLink.innerHTML = `🧊 Masamda Gör <img src="${item.img}" style="display:none">`;
@@ -162,7 +214,6 @@ function loadModalModel(path) {
         currentModalModel.position.sub(center);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
-        // Modal içi görsel ölçekleme
         currentModalModel.scale.setScalar(4.0 / maxDim); 
         modalScene.add(currentModalModel);
     }, undefined, () => { loaderWrapper.style.display = 'none'; });
