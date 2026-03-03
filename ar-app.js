@@ -30,13 +30,16 @@ function init() {
     new GLTFLoader().load(modelPath, (gltf) => {
         foodModel = gltf.scene;
         const box = new THREE.Box3().setFromObject(foodModel);
-        // Önemli: Android masada 20cm sabit ölçek
-        foodModel.scale.setScalar(0.2 / box.getSize(new THREE.Vector3()).length());
+        // Önemli: Ölçek 0.12'ye (12cm) düşürüldü, böylece model ekrana daha rahat sığar
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        foodModel.scale.setScalar(0.12 / maxDim); 
+        
         document.getElementById('loader').style.display = 'none';
         instructionText.innerText = "Kamerayı masada gezdirin.";
     });
 
-    reticle = new THREE.Mesh(new THREE.RingGeometry(0.08, 0.1, 32).rotateX(-Math.PI/2), new THREE.MeshBasicMaterial({color: 0xFF9933}));
+    reticle = new THREE.Mesh(new THREE.RingGeometry(0.04, 0.05, 32).rotateX(-Math.PI/2), new THREE.MeshBasicMaterial({color: 0xFF9933}));
     reticle.matrixAutoUpdate = false;
     reticle.visible = false;
     scene.add(reticle);
