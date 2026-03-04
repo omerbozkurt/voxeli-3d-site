@@ -3,132 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>VOXELI 3D | Dijital Deneyimde Yeni Boyut</title>
+    <title>VOXELI 3D | Profesyonel AR Deneyimi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="light-mode">
-    <nav class="navbar">
-        <div class="logo">VOXELI <span>3D</span></div>
-        <div class="nav-links" id="nav-links">
-            <a href="#home" class="nav-item">Ana Sayfa</a>
-            <a href="#services" class="nav-item">Özellikler</a>
-            <a href="#how-it-works" class="nav-item">İşleyiş</a>
-            <a href="#contact" class="nav-item">İletişim</a>
-        </div>
-        <div class="nav-actions">
-            <button id="theme-toggle" class="theme-btn" aria-label="Tema Değiştir">🌙</button>
-            <a href="#menu-section" class="demo-btn">Canlı İncele</a>
-            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-        </div>
-    </nav>
+    <header class="navbar">
+        <nav class="v-container nav-wrapper">
+            <div class="logo">VOXELI <span>3D</span></div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home" class="nav-item">Ana Sayfa</a></li>
+                <li><a href="#services" class="nav-item">Özellikler</a></li>
+                <li><a href="#how-it-works" class="nav-item">Nasıl Çalışır?</a></li>
+                <li><a href="#contact" class="nav-item">İletişim</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="https://omerbozkurt.github.io/voxeli-3d-menu/" target="_blank" class="demo-btn">Canlı Demo</a>
+                <button class="hamburger" id="hamburger"><span></span><span></span></button>
+            </div>
+        </nav>
+    </header>
 
-    <section id="home" class="hero-section">
-        <div class="hero-grid">
-            <div class="hero-content">
-                <span class="badge">UZAMSAL DENEYİM</span>
-                <h1>Mekanı Yeniden <br><span class="highlight">Tanımlayın.</span></h1>
-                <p class="hero-desc">Sıradan ve hareketsiz web menülerini, dokunduğunuzda canlanan üç boyutlu bir etkileşim alanına dönüştürün. Ziyaretçilerinize sadece bir liste değil, iz bırakan bir keşif deneyimi sunun.</p>
-                <div class="hero-btns">
-                    <a href="#contact" class="primary-btn">Deneyimi Başlat</a>
-                    <a href="#menu-section" class="secondary-btn">Canlı İncele</a>
+    <main>
+        <section id="home" class="hero-section">
+            <div class="v-container hero-grid">
+                <div class="hero-content">
+                    <span class="badge">ERKEN ERİŞİM</span>
+                    <h1>Ürünlerinizi Masada <br><span class="highlight">Canlandırın.</span></h1>
+                    <p class="hero-desc">Müşterilerinize sadece bir liste değil, masalarında hayat bulan etkileşimli bir görsel şölen sunun. Karar sürecini %30 hızlandırın.</p>
+                    <div class="hero-btns">
+                        <a href="#contact" class="primary-btn">Hemen Başlayın</a>
+                        <a href="#how-it-works" class="secondary-btn">Süreci İncele →</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div id="hero-3d-viewer" class="hero-3d-scene"></div>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div id="hero-3d-viewer" class="hero-3d-container"></div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="services" class="services-area render-optimize">
-        <div class="section-title">
-            <h2>Statik Sayfalardan Canlı Etkileşimlere</h2>
-            <p class="section-desc">Ziyaretçilerinizin dikkatini ilk saniyede yakalayan, özenle tasarlanmış detaylar.</p>
-        </div>
-        <div class="modern-services">
-            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">01</div><div class="ms-content"><h3>Dokunsal Tasarım</h3><p>Her bir detayı hissedilebilir kılan, pürüzsüz ve üç boyutlu görsel bloklar.</p></div></div>
-            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">02</div><div class="ms-content"><h3>Sınır Tanımayan Gerçeklik</h3><p>Herhangi bir uygulama indirme zorunluluğu olmadan, dijital objeleri kendi dünyanızda anında görüntüleyin.</p></div></div>
-            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">03</div><div class="ms-content"><h3>Akıcı Kullanım</h3><p>Bekleme sürelerini ortadan kaldıran, hareketlerinize saniyesinde tepki veren kusursuz bir arayüz.</p></div></div>
-            <div class="modern-service-card"><div class="card-glow"></div><div class="ms-icon">04</div><div class="ms-content"><h3>Zenginleştirilmiş İçgörü</h3><p>Kullanıcıların hangi alanlarda daha fazla vakit geçirdiğini anlamlandıran, net veri analizleri.</p></div></div>
-        </div>
-    </section>
-
-    <section id="how-it-works" class="how-it-works-area render-optimize">
-        <div class="section-title"><h2>Fikirden Ekrana</h2></div>
-        <div class="staggered-steps-container">
-            <div class="staggered-step-card"><div class="bg-number">01</div><div class="step-content"><h3>Tasarım Süreci</h3><p>Seçtiğiniz objeleri, özenli detaylarla zenginleştirilmiş üç boyutlu formlara dönüştürüyoruz.</p></div></div>
-            <div class="staggered-step-card"><div class="bg-number">02</div><div class="step-content"><h3>Kusursuz Uyum</h3><p>Hazırlanan arayüzü, mevcut sistemlerinize hiçbir bozulma yaşanmadan, doğal bir şekilde entegre ediyoruz.</p></div></div>
-            <div class="staggered-step-card"><div class="bg-number">03</div><div class="step-content"><h3>Canlı Deneyim</h3><p>Ziyaretçileriniz anında etkileşime geçerek, bu yeni nesil akışın tadını çıkarmaya başlıyor.</p></div></div>
-        </div>
-    </section>
-
-    <section id="menu-section" class="menu-area render-optimize">
-        <div class="section-title"><h2>Etkileşim Alanı</h2></div>
-        <main class="menu-container" id="menu-container"></main>
-    </section>
-
-    <section id="contact" class="contact-area render-optimize">
-        <div class="contact-split-container">
-            <div class="contact-brand-side">
-                <span class="badge">İLETİŞİM</span>
-                <h2>Fikirlerinizi <br><span class="highlight">boyutlandıralım.</span></h2>
-                <p>Dijital varlığınızı bir sonraki seviyeye taşımak için buradayız.</p>
-                
-                <div class="direct-contact">
-                    <a href="mailto:hello@voxeli3d.com" class="contact-link">hello@voxeli3d.com</a>
-                    <div class="mini-social">
-                        <a href="#">Instagram</a>
-                        <span>/</span>
-                        <a href="#">LinkedIn</a>
+        <section id="services" class="services-area">
+            <div class="v-container">
+                <div class="section-header reveal">
+                    <span class="v-label">ÖZELLİKLER</span>
+                    <h2>Neden VOXELI 3D?</h2>
+                </div>
+                <div class="modern-services">
+                    <div class="modern-service-card reveal">
+                        <div class="ms-num">01</div>
+                        <h3>Gerçekçi Detaylar</h3>
+                        <p>Ürünlerin her dokusunu yansıtan stüdyo kalitesinde, iştah açıcı 3D modelleme.</p>
+                    </div>
+                    <div class="modern-service-card reveal">
+                        <div class="ms-num">02</div>
+                        <h3>Anında AR</h3>
+                        <p>QR kod ile tarayıcı üzerinden saniyeler içinde masada görün. Uygulama gerektirmez.</p>
+                    </div>
+                    <div class="modern-service-card reveal">
+                        <div class="ms-num">03</div>
+                        <h3>Sipariş Artışı</h3>
+                        <p>Görselleştirilmiş ürünler müşterilerde "sahip olma" isteğini ve güveni artırır.</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <form class="contact-form-minimal" onsubmit="event.preventDefault(); alert('İletiniz başarıyla ulaştı.');">
-                <div class="input-row">
-                    <input type="text" placeholder="İsim" required>
+        <section id="how-it-works" class="how-it-works-area">
+            <div class="v-container">
+                <div class="section-header reveal">
+                    <span class="v-label">NASIL ÇALIŞIR?</span>
+                    <h2>Kullanımı Çok Basit</h2>
                 </div>
-                <div class="input-row">
-                    <input type="email" placeholder="E-posta Adresi" required>
-                </div>
-                <div class="input-row">
-                    <textarea placeholder="Mesajınız" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="clean-submit-btn">
-                    Mesajı İlet
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </button>
-            </form>
-        </div>
-    </section>
-
-    <div id="model-modal" class="modal hidden">
-        <div class="modal-glass">
-            <div id="close-btn" class="close-btn">&times;</div>
-            <div id="3d-viewer" class="viewer-container"><div id="loader-wrapper"><div class="spinner"></div></div></div>
-            <div class="modal-info">
-                <div class="info-header"><h2 id="modal-title"></h2><span id="modal-price" class="modal-price-tag"></span></div>
-                <div class="nutrition-row">
-                    <div class="glass-box"><strong>Enerji Değeri</strong><span id="modal-calories"></span> kcal</div>
-                    <div class="glass-box"><strong>İçerik</strong><span id="modal-ingredients"></span></div>
-                </div>
-                <div class="action-buttons">
-                    <a id="ar-link" href="#" class="ar-btn">🧊 Mekana Taşı</a>
-                    <button class="order-btn">Seçimi Onayla</button>
+                <div class="staggered-steps">
+                    <div class="step-card reveal">
+                        <div class="step-bg-num">1</div>
+                        <h3>Kodu Okutun</h3>
+                        <p>Müşteriniz masadaki QR kodu telefonuyla saniyeler içinde tarar.</p>
+                    </div>
+                    <div class="step-card reveal">
+                        <div class="step-bg-num">2</div>
+                        <h3>Ürünü İnceleyin</h3>
+                        <p>3D menü açılır, ürün her açıdan dokunmatik olarak incelenir.</p>
+                    </div>
+                    <div class="step-card reveal">
+                        <div class="step-bg-num">3</div>
+                        <h3>Masaya Koyun</h3>
+                        <p>"Mekanda Gör" butonuyla yemeği masaya sanal olarak yerleştirir.</p>
+                    </div>
                 </div>
             </div>
+        </section>
+
+        <section id="contact" class="contact-area">
+            <div class="v-container contact-split reveal">
+                <div class="contact-text">
+                    <span class="v-label">BİZE ULAŞIN</span>
+                    <h2>Fikirlerinizi Birlikte <br><span class="highlight">Boyutlandıralım.</span></h2>
+                    <p>Pilot restoranlarımızdan biri olmak için formu doldurun, sizi arayalım.</p>
+                </div>
+                <div class="form-card">
+                    <form onsubmit="event.preventDefault(); alert('Mesajınız başarıyla iletildi.');">
+                        <div class="v-input-row">
+                            <input type="text" placeholder="İşletme Adı" required>
+                            <input type="email" placeholder="E-posta Adresi" required>
+                        </div>
+                        <button type="submit" class="submit-btn">İletişime Geç</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="v-container footer-content">
+            <div class="footer-left">
+                <div class="logo">VOXELI <span>3D</span></div>
+                <p>Yeni Nesil Menü Deneyimi</p>
+            </div>
+            <div class="footer-right">
+                <div class="social-links">
+                    <a href="#">Instagram</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="mailto:hello@voxeli3d.com">Email</a>
+                </div>
+                <p class="copyright">&copy; 2026 VOXELI 3D. Tüm Hakları Saklıdır.</p>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script type="importmap">
     { 
         "imports": { 
             "three": "https://unpkg.com/three@0.160.0/build/three.module.js", 
             "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
-            "gsap": "https://unpkg.com/gsap@3.12.5/index.js"
+            "gsap": "https://cdn.skypack.dev/gsap"
         } 
     }
     </script>
